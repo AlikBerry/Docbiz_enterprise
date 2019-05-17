@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
+
+<table>
+  <thead>
+    <tr style="background-color: #007bff">
+      <th>ДАТА_ПУБЛИКАЦИИ</th>
+      <th>ДАТА_ОБНОВЛЕНИЯ</th>
+      <th>ПРИХОД</th>
+      <th>РАСХОД</th>
+      <th>НАЗНАЧЕНИЕ</th>
+      <th>БАЛАНС</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in transactions %}
+    <tr>
+      <td data-label="ДАТА_ПУБЛИКАЦИИ">{{ i.date_pub|date:'d/m/Y' }}</td>
+      <td data-label="ДАТА_ОБНОВЛЕНИЯ">{{ i.date_up|date:'d/m/Y' }}</td>
+      <td data-label="ПРИХОД">{{ i.incoming }}</td>
+      <td data-label="РАСХОД">{{ i.expense }}</td>
+      <td data-label="НАЗНАЧЕНИЕ">{{ i.description }}</td>
+      <td data-label="БАЛАНС">{{ i.get_balance }}</td>
+    </tr>
+  {% endfor %}
+    <tr>
+        <th  colspan="2" scope="row">ИТОГ</th>
+        <td  data-label="ПРИХОД">{{ sum_incoming }}</td>
+        <td  data-label="РАСХОД">{{ sum_expense }}</td>
+        <td></td>
+        <td data-label="БАЛАНС">{{ balance }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+{% endblock %}
