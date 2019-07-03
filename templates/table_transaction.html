@@ -3,8 +3,9 @@
 {% load widget_tweaks %}
 {% block content %}
 
-    <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 
+
+<link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <table>
   <thead>
     <tr style="background-color: #007bff">
@@ -28,14 +29,34 @@
     </tr>
   {% endfor %}
     <tr>
-        <th  colspan="2" scope="row">ИТОГ</th>
-        <td  data-label="ПРИХОД">{{ sum_incoming }}</td>
-        <td  data-label="РАСХОД">{{ sum_expense }}</td>
+        <th  colspan="2" scope="row"><h4>ИТОГ</h4></th>
+        <td  data-label="ПРИХОД"><h6>{{ sum_incoming }}</h6></td>
+        <td  data-label="РАСХОД"><h6>{{ sum_expense }}</h6></td>
         <td></td>
-        <td data-label="БАЛАНС">{{ balance }}</td>
+        <td data-label="БАЛАНС"><h6>{{ balance }}</h6></td>
     </tr>
   </tbody>
 </table>
+
+<div class="pagination" style="display: flex;justify-content: center;">
+    <span class="step-links">
+        {% if transactions.has_previous %}
+            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
+            <button><a href="?page={{ transactions.previous_page_number }}">ПРЕД.</a></button>
+        {% endif %}
+
+                <span class="current">
+             {{ transactions.number }} ИЗ {{ transactions.paginator.num_pages }}
+        </span>
+
+
+
+        {% if transactions.has_next %}
+            <button><a href="?page={{ transactions.next_page_number }}">СЛЕД.</a></button>
+            <button><a href="?page={{ transactions.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+        {% endif %}
+    </span>
+</div>
 
 
 {% endblock %}
