@@ -10,7 +10,3 @@ class LoginForm(forms.Form):
 
 
 
-class TransactionForm(forms.ModelForm):
-    class Meta:
-        model = Transactions
-        fields = "__all__"

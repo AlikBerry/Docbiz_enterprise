@@ -1,6 +1,6 @@
 from decimal import Decimal
 from unicodedata import decimal
-
+from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
@@ -53,7 +53,7 @@ def base(request):
 
 def table_trans(request):
     context = login_page_data()
-    context['transactions'] = Transactions.objects.all().order_by('date_pub')
+    context['transactions'] = Transactions.objects.all().order_by('created_date')
     paginator = Paginator(context['transactions'], 10)
     page = request.GET.get('page')
     context['transactions'] = paginator.get_page(page)
@@ -62,6 +62,8 @@ def table_trans(request):
     context['sum_expense'] = Transactions.objects.aggregate(Sum('expense'))
     context['sum_expense'] = ''.join('{}'.format(val) for key, val in context['sum_expense'].items())
     context['balance'] = format(float(context['sum_incoming'])-float(context['sum_expense']), '.2f')
+
+
 
 
 
@@ -76,3 +78,7 @@ def employee(request):
    context = login_page_data()
    context['employee'] = Employee.objects.all()
    return render(request, 'table_employee.html', context)
+
+
+
+
