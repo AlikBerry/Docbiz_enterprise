@@ -27,6 +27,8 @@ class Transactions(models.Model):
         return self.incoming - self.expense
 
 
+
+
     class Meta:
         db_table = "transactions"
         verbose_name = 'Транзакции'
@@ -60,14 +62,15 @@ class Clients(models.Model):
 
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата создания')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
+    city = models.CharField(max_length=100, verbose_name='город', blank=True, null=True)
     address = models.CharField(max_length=255, verbose_name='адрес')
     type_of_activity = models.CharField(max_length=100, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     landlord = models.CharField(max_length=255,blank=True, null=True, verbose_name='арендодатель')
-    payment = models.IntegerField(default=0)
+    payment = models.IntegerField(default=0, verbose_name='оплата')
     status = models.BooleanField(default=True, verbose_name='статус')
 
     def __str__(self):
-        return "{}".format(self.address)
+        return "{}, {}".format(self.city, self.address)
 
     class Meta:
         db_table = "clients"
@@ -115,7 +118,7 @@ class IndividualEntrepreneur(models.Model):
     iep_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='ИП')
     full_name = models.CharField(max_length=100, verbose_name='Ф.И.О')
     tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')
-    email = models.EmailField(verbose_name='электронная почта')
+    email = models.EmailField(verbose_name='электронная почта', blank=True, null=True)
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
 
@@ -160,7 +163,7 @@ class IndividualEntrepreneurInfo(models.Model):
 
 # class ModelOfCashbox(models.Model):
 #     name = models.CharField(max_length=155, verbose_name='название модели')
-#
+#     salary = models.IntegerField()
 #     def __str__(self):
 #         return "{}".format(self.name)
 #

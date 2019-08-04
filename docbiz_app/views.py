@@ -52,22 +52,22 @@ def base(request):
 
 
 def table_trans(request):
-    context = login_page_data()
-    context['transactions'] = Transactions.objects.all().order_by('created_date')
-    paginator = Paginator(context['transactions'], 10)
-    page = request.GET.get('page')
-    context['transactions'] = paginator.get_page(page)
-    context['sum_incoming'] = Transactions.objects.aggregate(Sum('incoming'))
-    context['sum_incoming'] = ''.join('{}'.format(val) for key, val in context['sum_incoming'].items())
-    context['sum_expense'] = Transactions.objects.aggregate(Sum('expense'))
-    context['sum_expense'] = ''.join('{}'.format(val) for key, val in context['sum_expense'].items())
-    context['balance'] = format(float(context['sum_incoming'])-float(context['sum_expense']), '.2f')
+    if request.user.is_superuser:
+        context = login_page_data()
+        context['transactions'] = Transactions.objects.all().order_by('created_date')
+        paginator = Paginator(context['transactions'], 10)
+        page = request.GET.get('page')
+        context['transactions'] = paginator.get_page(page)
+        context['sum_incoming'] = Transactions.objects.aggregate(Sum('incoming'))
+        context['sum_incoming'] = ''.join('{}'.format(val) for key, val in context['sum_incoming'].items())
+        context['sum_expense'] = Transactions.objects.aggregate(Sum('expense'))
+        context['sum_expense'] = ''.join('{}'.format(val) for key, val in context['sum_expense'].items())
+        context['balance'] = format(float(context['sum_incoming'])-float(context['sum_expense']), '.2f')
 
-
-
-
-
-    return render(request, 'table_transaction.html', context)
+        return render(request, 'table_transaction.html', context)
+    else:
+        context = login_page_data()
+        return render(request, 'base.html', context)
 
 def logout_view(request):
     logout(request)
