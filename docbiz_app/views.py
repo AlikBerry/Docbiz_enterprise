@@ -19,11 +19,13 @@ def login_page_data():
         "menu_list": Menu.objects.all()
     }
 
+
 def baseindexview(request):
     if request.user.is_authenticated:
         return redirect("base")
     context = login_page_data()
     return render(request, "login.html", context)
+
 
 def login_view(request):
     if request.method == "POST":
@@ -45,12 +47,12 @@ def login_view(request):
     else:
         return redirect("home")
 
-
+@login_required(login_url="/login")
 def base(request):
     context = login_page_data()
     return render(request, "base.html", context)
 
-
+@login_required(login_url="/login")
 def table_trans(request):
     if request.user.is_superuser:
         context = login_page_data()
@@ -73,7 +75,7 @@ def logout_view(request):
     logout(request)
     return redirect("home")
 
-
+@login_required(login_url="/login")
 def employee(request):
    context = login_page_data()
    context['employee'] = Employee.objects.all()
