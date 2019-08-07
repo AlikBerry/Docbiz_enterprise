@@ -8,9 +8,7 @@ from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from docbiz_app.forms import LoginForm
-from .models import Transactions, Menu, Employee
-
-
+from .models import Transactions, Menu, Employee, Clients, Cashboxes, Terminal
 
 
 def login_page_data():
@@ -57,7 +55,7 @@ def table_trans(request):
     if request.user.is_superuser:
         context = login_page_data()
         context['transactions'] = Transactions.objects.all().order_by('created_date')
-        paginator = Paginator(context['transactions'], 10)
+        paginator = Paginator(context['transactions'], 20)
         page = request.GET.get('page')
         context['transactions'] = paginator.get_page(page)
         context['sum_incoming'] = Transactions.objects.aggregate(Sum('incoming'))
@@ -81,6 +79,12 @@ def employee(request):
    context['employee'] = Employee.objects.all()
    return render(request, 'table_employee.html', context)
 
-
+@login_required(login_url="/login")
+def clients(request):
+    context = login_page_data()
+    context['clients'] = Clients.objects.filter(status=True)
+    context['cashboxes'] = Cashboxes.objects.all()
+    context['terminal'] = Terminal.objects.all()
+    return render(request, 'table_clients.html', context)
 
 

@@ -79,7 +79,7 @@ class Clients(models.Model):
 
 
 
-class Casboxes(models.Model):
+class Cashboxes(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата постановки')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     model_name = models.CharField(max_length=155, blank=True, null=True, verbose_name='название модели')

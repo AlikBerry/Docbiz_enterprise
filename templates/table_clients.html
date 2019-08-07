@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.core.min.js" ></script>
+    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/ods.min.js"></script>
+    <script type="text/javascript" src="http://sheetjs.com/demos/Blob.js"></script>
+    <script type="text/javascript" src="http://sheetjs.com/demos/FileSaver.js"></script>
+    <script type="text/javascript" src="http://sheetjs.com/demos/Export2Excel.js"></script>
+    <script>
+        function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
+    </script>
+
+
+<link rel="stylesheet" href="{% static 'table/css/main.css' %}">
+<table id="myTable">
+  <thead>
+    <tr style="background-color: #007bff">
+      <th>ДАТА</th>
+      <th>ГОРОД</th>
+      <th>АДРЕС</th>
+      <th>ВИД ДЕЯТЕЛЬНОСТИ</th>
+      <th>ОПЛАТА</th>
+      <th>НОМЕР КАССЫ</th>
+      <th>МОДЕЛЬ</th>
+      <th>НОМЕР ТЕРМИНАЛА</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for j in clients %}
+    {% for i in cashboxes %}
+        {% for y in terminal %}
+    <tr>
+
+      <td data-label="ДАТА">{{ j.created_date }}</td>
+      <td data-label="ГОРОД">{{ j.city }}</td>
+      <td data-label="АДРЕС">{{ j.address }}</td>
+      <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ j.type_of_activity }}</td>
+      <td data-label="ОПЛАТА">{{ j.payment }}</td>
+
+
+        {% if  i.client_id == j.id %}
+       <td data-label="НОМЕР КАССЫ">{{ i.number_of_cashbox }}</td>
+        {% else %}
+       <td data-label="НОМЕР КАССЫ"></td>
+        {% endif %}
+
+
+        {% if i.client_id == j.id %}
+       <td data-label="МОДЕЛЬ">{{ i.model_name }}</td>
+        {% else %}
+       <td data-label="МОДЕЛЬ"></td>
+        {% endif %}
+
+
+        {% if  y.client_id == j.id %}
+      <td data-label="НОМЕР ТЕРМИНАЛА">{{ y.number_of_terminal }}</td>
+         {% else %}
+      <td data-label="НОМЕР ТЕРМИНАЛА"></td>
+        {% endif %}
+    </tr>
+            {% endfor %}
+        {% endfor %}
+  {% endfor %}
+
+  </tbody>
+</table>
+<button onclick="download();">Export to Excel</button>
+
+{#<div class="pagination" style="display: flex;justify-content: center;">#}
+{#    <span class="step-links">#}
+{#        {% if transactions.has_previous %}#}
+{#            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>#}
+{#            <button><a href="?page={{ transactions.previous_page_number }}">ПРЕД.</a></button>#}
+{#        {% endif %}#}
+{##}
+{#                <span class="current">#}
+{#             {{ transactions.number }} ИЗ {{ transactions.paginator.num_pages }}#}
+{#        </span>#}
+{##}
+{##}
+{##}
+{#        {% if transactions.has_next %}#}
+{#            <button><a href="?page={{ transactions.next_page_number }}">СЛЕД.</a></button>#}
+{#            <button><a href="?page={{ transactions.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#</div>#}
+
+
+
+{% endblock %}
