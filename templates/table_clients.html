@@ -32,33 +32,14 @@
     {% for i in cashboxes %}
         {% for y in terminal %}
     <tr>
-
       <td data-label="ДАТА">{{ j.created_date }}</td>
       <td data-label="ГОРОД">{{ j.city }}</td>
       <td data-label="АДРЕС">{{ j.address }}</td>
       <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ j.type_of_activity }}</td>
       <td data-label="ОПЛАТА">{{ j.payment }}</td>
-
-
-        {% if  i.client_id == j.id %}
-       <td data-label="НОМЕР КАССЫ">{{ i.number_of_cashbox }}</td>
-        {% else %}
-       <td data-label="НОМЕР КАССЫ"></td>
-        {% endif %}
-
-
-        {% if i.client_id == j.id %}
-       <td data-label="МОДЕЛЬ">{{ i.model_name }}</td>
-        {% else %}
-       <td data-label="МОДЕЛЬ"></td>
-        {% endif %}
-
-
-        {% if  y.client_id == j.id %}
+      <td data-label="НОМЕР КАССЫ">{{ i.number_of_cashbox }}</td>
+      <td data-label="МОДЕЛЬ">{{ i.model_name }}</td>
       <td data-label="НОМЕР ТЕРМИНАЛА">{{ y.number_of_terminal }}</td>
-         {% else %}
-      <td data-label="НОМЕР ТЕРМИНАЛА"></td>
-        {% endif %}
     </tr>
             {% endfor %}
         {% endfor %}
