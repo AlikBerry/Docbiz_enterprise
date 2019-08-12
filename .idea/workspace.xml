@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21f26be7-8a44-41d6-84b7-e9ea7caf76c7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docbiz_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/table_clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/table_clients.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -168,7 +171,8 @@
       <workItem from="1564949383043" duration="3792000" />
       <workItem from="1565038656028" duration="3081000" />
       <workItem from="1565074035742" duration="14473000" />
-      <workItem from="1565158729362" duration="3782000" />
+      <workItem from="1565158729362" duration="6739000" />
+      <workItem from="1565313556848" duration="3354000" />
     </task>
     <servers />
   </component>

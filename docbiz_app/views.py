@@ -83,8 +83,6 @@ def employee(request):
 def clients(request):
     context = login_page_data()
     context['clients'] = Clients.objects.filter(status=True)
-    context['cashboxes'] = Cashboxes.objects.all()
-    context['terminal'] = Terminal.objects.all()
     return render(request, 'table_clients.html', context)
 
 
