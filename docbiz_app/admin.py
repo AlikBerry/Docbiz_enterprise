@@ -23,6 +23,16 @@ class ClientsAdmin(admin.ModelAdmin):
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Cashboxes._meta.fields]
+    search_fields = ('number_of_cashbox',)
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            uid = self.value()
+            return queryset.filter(
+                Q(uid=uid) |
+                Q(payment__uid=uid) |
+                Q(user__uid=uid)
+            )
 
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
