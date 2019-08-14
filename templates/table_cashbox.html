@@ -17,25 +17,21 @@
 <table id="myTable">
   <thead>
     <tr style="background-color: #007bff">
-      <th>ДАТА</th>
-      <th>ГОРОД</th>
-      <th>АДРЕС</th>
-      <th>ВИД ДЕЯТЕЛЬНОСТИ</th>
-      <th>ОПЛАТА</th>
-      <th>КАССА</th>
-      <th>ТЕРМИНАЛ</th>
+      <th>ДАТА ПОСТАНОВКИ</th>
+      <th>МОДЕЛЬ</th>
+      <th>НОМЕР</th>
+      <th>ИП</th>
+      <th>КЛИЕНТ</th>
     </tr>
   </thead>
   <tbody>
-  {% for cl in clients %}
+  {% for cash in cashboxes %}
     <tr>
-      <td data-label="ДАТА">{{ cl.created_date }}</td>
-      <td data-label="ГОРОД">{{ cl.city }}</td>
-      <td data-label="АДРЕС">{{ cl.address }}</td>
-      <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>
-      <td data-label="ОПЛАТА">{{ cl.payment }}</td>
-      <td data-label="КАССА">КАССА</td>
-      <td data-label="ТЕРМИНАЛ"></td>
+      <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date }}</td>
+      <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
+      <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
+      <td data-label="ИП">{{ cash.iep }}</td>
+      <td data-label="КЛИЕНТ">{{ cash.client }}</td>
     </tr>
   {% endfor %}
 

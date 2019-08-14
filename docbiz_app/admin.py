@@ -1,46 +1,39 @@
 from django.contrib import admin
 from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, IndividualEntrepreneurInfo, \
     Terminal
+from daterange_filter.filter import DateRangeFilter
 
 
 @admin.register(Transactions)
 class TransactionsAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Transactions._meta.fields]
-
+    list_display = ('created_date', 'incoming', 'expense', 'description')
+    list_filter = (('created_date', DateRangeFilter),)
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Menu._meta.fields]
+    list_display = ('name',)
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Employee._meta.fields]
+    list_display = ('full_name',)
 
 @admin.register(Clients)
 class ClientsAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Clients._meta.fields]
+    list_display = ('address', 'city', 'type_of_activity', 'status', 'id')
 
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Cashboxes._meta.fields]
-    search_fields = ('number_of_cashbox',)
+    list_display = ('number_of_cashbox', 'model_name', 'iep', 'client', 'id')
+  
 
-    def queryset(self, request, queryset):
-        if self.value() is not None:
-            uid = self.value()
-            return queryset.filter(
-                Q(uid=uid) |
-                Q(payment__uid=uid) |
-                Q(user__uid=uid)
-            )
 
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Terminal._meta.fields]
+    list_display = ('number_of_terminal', 'iep', 'client', 'id')
 
 @admin.register(IndividualEntrepreneur)
 class IepsAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in IndividualEntrepreneur._meta.fields]
+    list_display = ('iep_name', 'tel_number', 'el_key', 'status', 'id' )
 
 
 @admin.register(IndividualEntrepreneurInfo)

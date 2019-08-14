@@ -85,4 +85,8 @@ def clients(request):
     context['clients'] = Clients.objects.filter(status=True)
     return render(request, 'table_clients.html', context)
 
-
+@login_required(login_url="/login")
+def cashboxes(request):
+    context = login_page_data()
+    context['cashboxes'] = Cashboxes.objects.all()
+    return render(request, 'table_cashbox.html', context)
