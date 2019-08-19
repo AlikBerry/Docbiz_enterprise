@@ -25,6 +25,7 @@ class ClientsAdmin(admin.ModelAdmin):
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = ('number_of_cashbox', 'model_name', 'iep', 'client', 'id')
+    search_fields = ["number_of_cashbox"]
     autocomplete_fields = ['client']
   
 
@@ -32,6 +33,7 @@ class CashboxesAdmin(admin.ModelAdmin):
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
     list_display = ('number_of_terminal', 'iep', 'client', 'id')
+    search_fields = ["number_of_terminal"]
     autocomplete_fields = ["client"]
 
 @admin.register(IndividualEntrepreneur)
