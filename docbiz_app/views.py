@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from docbiz_app.forms import LoginForm
 from .models import Transactions, Menu, Employee, Clients, Cashboxes, Terminal
-import imaplib
+
 
 def login_page_data():
     return {
