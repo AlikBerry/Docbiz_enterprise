@@ -20,25 +20,30 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(Clients)
 class ClientsAdmin(admin.ModelAdmin):
     list_display = ('address', 'city', 'type_of_activity', 'status', 'id')
+    search_fields = ["address", "city"]
 
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = ('number_of_cashbox', 'model_name', 'iep', 'client', 'id')
+    autocomplete_fields = ['client']
   
 
 
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
     list_display = ('number_of_terminal', 'iep', 'client', 'id')
+    autocomplete_fields = ["client"]
 
 @admin.register(IndividualEntrepreneur)
 class IepsAdmin(admin.ModelAdmin):
     list_display = ('iep_name', 'tel_number', 'el_key', 'status', 'id' )
+    search_fields = ["iep_name"]
 
 
 @admin.register(IndividualEntrepreneurInfo)
 class IepsInfoAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in IndividualEntrepreneurInfo._meta.fields]
+    list_display = ('iep', 'bank', 'login', 'password', 'codeword', 'password_of_card')
+    autocomplete_fields = ["iep"]
 
 
 
