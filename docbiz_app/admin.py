@@ -24,13 +24,13 @@ class ClientsAdmin(admin.ModelAdmin):
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = ('number_of_cashbox', 'model_name', 'iep', 'client', 'id')
-    search_fields = ["number_of_cashbox", "client__address", "client__city"]
+    search_fields = ["number_of_cashbox", "client__address", "client__city", "iep__iep_name"]
     autocomplete_fields = ["client", "iep"]
 
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
     list_display = ('number_of_terminal', 'iep', 'client', 'id')
-    search_fields = ["number_of_terminal", "client__city", "client__address"]
+    search_fields = ["number_of_terminal", "client__city", "client__address", "iep__iep_name"]
     autocomplete_fields = ["client", "iep"]
 
 @admin.register(IndividualEntrepreneur)
