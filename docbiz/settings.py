@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_admin_search',
     'daterange_filter',
     'widget_tweaks',
     'docbiz_app'

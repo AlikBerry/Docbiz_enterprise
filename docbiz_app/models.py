@@ -51,11 +51,14 @@ class Employee(models.Model):
 class Clients(models.Model):
 
     TYPE_ACTIVITY = (
+
         ('Жора', 'Жора'),
+        ('Хозяйственный', 'Хозяйственный'),
         ('Одежда', 'Одежда'),
         ('Продукты', 'Продукты'),
         ('Ресторан', 'Ресторан'),
         ('Сервис', 'Сервис'),
+        ('Салон красоты', 'Салон красоты'),
         ('СМЦ', 'СМЦ'),
         ('Цветочный ряд', 'Цветочный ряд'),
     )
@@ -66,6 +69,7 @@ class Clients(models.Model):
     address = models.CharField(max_length=255, verbose_name='адрес')
     type_of_activity = models.CharField(max_length=100, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     landlord = models.CharField(max_length=255, blank=True, null=True, verbose_name='арендодатель')
+    contacts = models.CharField(max_length=155, blank=True, null=True, verbose_name='контакты')
     payment = models.IntegerField(default=0, verbose_name='оплата')
     status = models.BooleanField(default=True, verbose_name='статус')
 

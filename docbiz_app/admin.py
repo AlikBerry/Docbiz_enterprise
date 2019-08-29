@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, IndividualEntrepreneurInfo, \
-    Terminal
+from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, IndividualEntrepreneurInfo, Terminal
 from daterange_filter.filter import DateRangeFilter
+
+
 
 
 @admin.register(Transactions)
@@ -20,21 +21,19 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(Clients)
 class ClientsAdmin(admin.ModelAdmin):
     list_display = ('address', 'city', 'type_of_activity', 'status', 'id')
-    search_fields = ["address", "city"]
+    search_fields = ["address", "city", "type_of_activity"]
 
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = ('number_of_cashbox', 'model_name', 'iep', 'client', 'id')
-    search_fields = ["number_of_cashbox"]
-    autocomplete_fields = ['client']
-  
-
+    search_fields = ["number_of_cashbox", "client__address", "client__city"]
+    autocomplete_fields = ["client", "iep"]
 
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
     list_display = ('number_of_terminal', 'iep', 'client', 'id')
-    search_fields = ["number_of_terminal"]
-    autocomplete_fields = ["client"]
+    search_fields = ["number_of_terminal", "client__city", "client__address"]
+    autocomplete_fields = ["client", "iep"]
 
 @admin.register(IndividualEntrepreneur)
 class IepsAdmin(admin.ModelAdmin):
