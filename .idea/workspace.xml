@@ -4,9 +4,6 @@
     <list default="true" id="21f26be7-8a44-41d6-84b7-e9ea7caf76c7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/models.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -181,7 +178,7 @@
       <workItem from="1566208866332" duration="3582000" />
       <workItem from="1566548570923" duration="599000" />
       <workItem from="1566902046856" duration="9339000" />
-      <workItem from="1566938239276" duration="4977000" />
+      <workItem from="1566938239276" duration="5187000" />
     </task>
     <servers />
   </component>

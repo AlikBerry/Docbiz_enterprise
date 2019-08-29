@@ -3,8 +3,6 @@ from .models import Transactions, Menu, Employee, Clients, Cashboxes, Individual
 from daterange_filter.filter import DateRangeFilter
 
 
-
-
 @admin.register(Transactions)
 class TransactionsAdmin(admin.ModelAdmin):
     list_display = ('created_date', 'incoming', 'expense', 'description')
