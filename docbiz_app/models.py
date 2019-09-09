@@ -119,7 +119,6 @@ class Terminal(models.Model):
 class IndividualEntrepreneur(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата открытия')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    end_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата окончания')
     iep_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='ИП')
     full_name = models.CharField(max_length=100, verbose_name='Ф.И.О')
     tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')

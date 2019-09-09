@@ -38,7 +38,7 @@ class TerminalAdmin(admin.ModelAdmin):
 
 @admin.register(IndividualEntrepreneur)
 class IepsAdmin(admin.ModelAdmin):
-    list_display = ('iep_name', 'created_date', 'end_date','tel_number', 'el_key', 'status', 'id' )
+    list_display = ('iep_name', 'created_date', 'tel_number', 'el_key', 'status', 'id' )
     search_fields = ["iep_name"]
     
 
