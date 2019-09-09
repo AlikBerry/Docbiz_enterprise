@@ -90,3 +90,8 @@ def cashboxes(request):
     context = login_page_data()
     context['cashboxes'] = Cashboxes.objects.all()
     return render(request, 'table_cashbox.html', context)
+
+@login_required(login_url="/login")
+def add_transactions(request):
+    context = login_page_data()
+    return render(request, "add_transaction.html", context)

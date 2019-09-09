@@ -8,6 +8,9 @@ class TransactionsAdmin(admin.ModelAdmin):
     list_display = ('created_date', 'incoming', 'expense', 'description')
     list_filter = (('created_date', DateRangeFilter),)
 
+    
+
+
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -35,14 +38,17 @@ class TerminalAdmin(admin.ModelAdmin):
 
 @admin.register(IndividualEntrepreneur)
 class IepsAdmin(admin.ModelAdmin):
-    list_display = ('iep_name', 'tel_number', 'el_key', 'status', 'id' )
+    list_display = ('iep_name', 'created_date', 'end_date','tel_number', 'el_key', 'status', 'id' )
     search_fields = ["iep_name"]
-
+    
 
 @admin.register(IndividualEntrepreneurInfo)
 class IepsInfoAdmin(admin.ModelAdmin):
     list_display = ('iep', 'bank', 'login', 'password', 'codeword', 'password_of_card')
     autocomplete_fields = ["iep"]
+
+
+        
 
 
 

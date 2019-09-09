@@ -1,6 +1,9 @@
+from datetime import *
+from email.policy import default
+
 from django.db import models
 from django.db.models import Sum
-from datetime import *
+
 
 class Menu(models.Model):
     name = models.CharField(max_length=155)
@@ -39,7 +42,7 @@ class Employee(models.Model):
     full_name = models.CharField(max_length=255, verbose_name='Ф.И.О')
     tel_num = models.CharField(max_length=155, verbose_name='номер тел.')
     address = models.CharField(max_length=255, verbose_name='адрес')
-    salary = models.CharField(max_length=155, verbose_name='ЗП')
+    salary = models.IntegerField(default=0, verbose_name='ЗП')
 
     class Meta:
         db_table = "employee"
@@ -113,12 +116,10 @@ class Terminal(models.Model):
         verbose_name_plural = "Терминалы"
 
 
-
-
-
 class IndividualEntrepreneur(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата открытия')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
+    end_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата окончания')
     iep_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='ИП')
     full_name = models.CharField(max_length=100, verbose_name='Ф.И.О')
     tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')
@@ -162,18 +163,3 @@ class IndividualEntrepreneurInfo(models.Model):
         db_table = "iep_info"
         verbose_name = "ИП инфо."
         verbose_name_plural = "ИП инфо."
-
-
-
-# class ModelOfCashbox(models.Model):
-#     name = models.CharField(max_length=155, verbose_name='название модели')
-#     salary = models.IntegerField()
-#     def __str__(self):
-#         return "{}".format(self.name)
-#
-#     class Meta:
-#         db_table = "model_of_cashbox"
-#         verbose_name = "Название касс"
-#         verbose_name_plural = "Название касс"
-
-

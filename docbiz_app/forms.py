@@ -8,6 +8,9 @@ class LoginForm(forms.Form):
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
 
+    
+
+
 
 
 
