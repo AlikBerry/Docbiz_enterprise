@@ -70,7 +70,7 @@ class Clients(models.Model):
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     city = models.CharField(max_length=100, verbose_name='город', blank=True, null=True)
     address = models.CharField(max_length=255, verbose_name='адрес')
-    type_of_activity = models.CharField(max_length=100, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
+    type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     landlord = models.CharField(max_length=255, blank=True, null=True, verbose_name='арендодатель')
     contacts = models.CharField(max_length=155, blank=True, null=True, verbose_name='контакты')
     payment = models.IntegerField(default=0, verbose_name='оплата')
@@ -117,14 +117,25 @@ class Terminal(models.Model):
 
 
 class IndividualEntrepreneur(models.Model):
+    TYPE_ACTIVITY = (
+
+        ('Цветы', 'Цветы'),
+        ('Цветы солдат', 'Цветы солдат'),
+        ('СМЦ', 'СМЦ'),
+        ('СМЦ солдат', 'СМЦ солдат'),
+        ('Одиночка', 'Одиночка'),
+        ('Одиночка солдат', 'Одиночка солдат'),
+    )
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата открытия')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    iep_name = models.CharField(max_length=50, blank=True, null=True, verbose_name='ИП')
-    full_name = models.CharField(max_length=100, verbose_name='Ф.И.О')
+    iep_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='ИП')
+    type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')
-    email = models.EmailField(verbose_name='электронная почта', blank=True, null=True)
+    email = models.EmailField(blank=True, null=True, verbose_name='электронная почта')
+    password = models.CharField(max_length=100, blank=True, null=True, verbose_name='пароль')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
+
 
     class Meta:
         db_table = "individual_entrepreneur"
@@ -133,6 +144,10 @@ class IndividualEntrepreneur(models.Model):
 
     def __str__(self):
         return "{}".format(self.iep_name)
+
+
+
+
 
 
 class IndividualEntrepreneurInfo(models.Model):
@@ -151,14 +166,21 @@ class IndividualEntrepreneurInfo(models.Model):
 
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    bank = models.CharField(max_length=100, choices=BANKS, verbose_name='банк')
+    iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
+    bank = models.CharField(max_length=100, blank=True, null=True, choices=BANKS, verbose_name='банк')
     password_of_card = models.CharField(max_length=50, null=True, blank=True, verbose_name='пароль карты')
     codeword = models.CharField(max_length=100, blank=True, null=True, verbose_name='кодовое слово')
-    login = models.CharField(max_length=100, blank=True, null=True, verbose_name='логин')
-    password = models.CharField(max_length=100, blank=True, null=True, verbose_name='пароль')
-    iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.DO_NOTHING, verbose_name='ИП')
+
+
+
 
     class Meta:
         db_table = "iep_info"
         verbose_name = "ИП инфо."
         verbose_name_plural = "ИП инфо."
+
+
+
+
+
+

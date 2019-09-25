@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, IndividualEntrepreneurInfo, Terminal
+from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, \
+    IndividualEntrepreneurInfo, Terminal
 from daterange_filter.filter import DateRangeFilter
 
 
@@ -7,8 +8,6 @@ from daterange_filter.filter import DateRangeFilter
 class TransactionsAdmin(admin.ModelAdmin):
     list_display = ('created_date', 'incoming', 'expense', 'description')
     list_filter = (('created_date', DateRangeFilter),)
-
-    
 
 
 @admin.register(Menu)
@@ -36,19 +35,31 @@ class TerminalAdmin(admin.ModelAdmin):
     search_fields = ["number_of_terminal", "client__city", "client__address", "iep__iep_name"]
     autocomplete_fields = ["client", "iep"]
 
+
+
+class IepInfoTabularInline(admin.TabularInline):
+    model = IndividualEntrepreneurInfo
+    extra = 1
+
 @admin.register(IndividualEntrepreneur)
-class IepsAdmin(admin.ModelAdmin):
-    list_display = ('iep_name', 'created_date', 'tel_number', 'el_key', 'status', 'id' )
+class IndividualEntrepreneurAdmin(admin.ModelAdmin):
+    inlines = [IepInfoTabularInline]
     search_fields = ["iep_name"]
-    
-
-@admin.register(IndividualEntrepreneurInfo)
-class IepsInfoAdmin(admin.ModelAdmin):
-    list_display = ('iep', 'bank', 'login', 'password', 'codeword', 'password_of_card')
-    autocomplete_fields = ["iep"]
 
 
-        
+
+# @admin.register(IndividualEntrepreneur)
+# class IepsAdmin(admin.ModelAdmin):
+#     list_display = ('iep_name', 'created_date', 'tel_number', 'el_key', 'status', 'id' )
+#     search_fields = ["iep_name"]
+#
+#
+#
+# @admin.register(IndividualEntrepreneurInfo)
+# class IepsInfoAdmin(admin.ModelAdmin):
+#     list_display = ('iep', 'bank', 'login', 'password', 'codeword', 'password_of_card')
+#     autocomplete_fields = ["iep"]
+
 
 
 
