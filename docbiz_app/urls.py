@@ -13,7 +13,8 @@ urlpatterns = [
     path("table_employee/", views.employee, name="emp_salary"),
     path("table_clients/", views.clients, name="clients"),
     path("table_cashboxes/", views.cashboxes, name='cashboxes'),
-    path("add_transaction/", views.add_transactions, name='add_transaction')
+    path("add_transaction/", views.add_transactions, name='add_transaction'),
+    path("table_cashboxes/<int:id>", views.cashboxes, name='cashboxes_id')
 
 ]
 

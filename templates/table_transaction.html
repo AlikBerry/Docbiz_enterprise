@@ -5,12 +5,10 @@
 
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
-    <a href="/add_transaction/"><button type="submit" class="btn btn-primary btn-lg btn-block">+ ДОБАВИТЬ ТРАНЗАКЦИЮ</button></a>
-<table>
+    <table>
   <thead>
     <tr style="background-color: #007bff">
-      <th>ДАТА_ПУБЛИКАЦИИ</th>
-      <th>ДАТА_ОБНОВЛЕНИЯ</th>
+      <th>ДАТА</th>
       <th>ПРИХОД</th>
       <th>РАСХОД</th>
       <th>НАЗНАЧЕНИЕ</th>
@@ -20,19 +18,18 @@
   <tbody>
   {% for i in transactions %}
     <tr>
-      <td data-label="ДАТА_ПУБЛИКАЦИИ">{{ i.created_date|date:'d/m/Y' }}</td>
-      <td data-label="ДАТА_ОБНОВЛЕНИЯ">{{ i.update_date|date:'d/m/Y' }}</td>
+      <td data-label="ДАТА">{{ i.created_date|date:'d/m/Y' }}</td>
       <td data-label="ПРИХОД">{{ i.incoming }}</td>
       <td data-label="РАСХОД">{{ i.expense }}</td>
       <td data-label="НАЗНАЧЕНИЕ">{{ i.description }}</td>
-      <td data-label="БАЛАНС">{{ i.get_balance }}</td>
+      <td data-label="БАЛАНС">{{ i.balance }}</td>
     </tr>
   {% endfor %}
     <tr>
         <th  colspan="2" scope="row"><h4>ИТОГ</h4></th>
         <td  data-label="ПРИХОД"><h6>{{ sum_incoming }}</h6></td>
         <td  data-label="РАСХОД"><h6>{{ sum_expense }}</h6></td>
-        <td></td>
+        <td></td>0
         <td data-label="БАЛАНС"><h6>{{ balance }}</h6></td>
     </tr>
   </tbody>

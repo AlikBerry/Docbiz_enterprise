@@ -5,15 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0002_auto_20190829_1104.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0003_individualentrepreneur_end_date.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0004_auto_20190909_1347.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0005_auto_20190909_1348.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0006_auto_20190909_1349.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/migrations/0007_remove_individualentrepreneur_end_date.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/add_transaction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docbiz_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docbiz_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/table_clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/table_clients.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/table_transaction.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/table_transaction.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -196,6 +191,9 @@
       <workItem from="1568670455782" duration="2097000" />
       <workItem from="1568742569059" duration="9189000" />
       <workItem from="1568830692666" duration="1303000" />
+      <workItem from="1569490259300" duration="8273000" />
+      <workItem from="1569503287054" duration="3638000" />
+      <workItem from="1569520429152" duration="6401000" />
     </task>
     <servers />
   </component>

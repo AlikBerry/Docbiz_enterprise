@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, \
-    IndividualEntrepreneurInfo, Terminal
+    IndividualEntrepreneurInfo, Terminal, EmployeeSalary
 from daterange_filter.filter import DateRangeFilter
 
 
@@ -14,9 +14,6 @@ class TransactionsAdmin(admin.ModelAdmin):
 class MenuAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
-@admin.register(Employee)
-class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('full_name',)
 
 @admin.register(Clients)
 class ClientsAdmin(admin.ModelAdmin):
@@ -39,12 +36,23 @@ class TerminalAdmin(admin.ModelAdmin):
 
 class IepInfoTabularInline(admin.TabularInline):
     model = IndividualEntrepreneurInfo
-    extra = 1
+    extra = 0
 
 @admin.register(IndividualEntrepreneur)
 class IndividualEntrepreneurAdmin(admin.ModelAdmin):
+    list_display = ('iep_name', 'type_of_activity', 'el_key', 'status')
     inlines = [IepInfoTabularInline]
     search_fields = ["iep_name"]
+
+class EmployeeSalaryTabularInline(admin.TabularInline):
+    model = EmployeeSalary
+    extra = 0
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('full_name',)
+    inlines = [EmployeeSalaryTabularInline]
+
 
 
 

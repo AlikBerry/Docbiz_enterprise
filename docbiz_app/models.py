@@ -1,6 +1,4 @@
 from datetime import *
-from email.policy import default
-
 from django.db import models
 from django.db.models import Sum
 
@@ -22,15 +20,14 @@ class Menu(models.Model):
 class Transactions(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата публикации')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    incoming = models.DecimalField(max_digits=50, decimal_places=2, default=0, verbose_name='приход')
-    expense = models.DecimalField(max_digits=50, decimal_places=2, default=0, verbose_name='расход')
+    incoming = models.IntegerField(blank=True, null=True, default=0, verbose_name='приход')
+    expense = models.IntegerField(blank=True, null=True, default=0, verbose_name='расход')
+    balance = models.IntegerField(default=0, blank=True, null=True, verbose_name='баланс')
     description = models.CharField(max_length=255, verbose_name='назначение')
 
-    def get_balance(self):
-        return self.incoming - self.expense
-
-
-
+    def save(self, *args, **kwargs):
+        self.balance = self.incoming - self.expense
+        super(Transactions, self).save(*args, **kwargs)
 
     class Meta:
         db_table = "transactions"
@@ -44,10 +41,29 @@ class Employee(models.Model):
     address = models.CharField(max_length=255, verbose_name='адрес')
     salary = models.IntegerField(default=0, verbose_name='ЗП')
 
+
     class Meta:
         db_table = "employee"
         verbose_name = 'Сотрудники'
         verbose_name_plural = 'Сотрудники'
+
+
+class EmployeeSalary(models.Model):
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE, verbose_name='сотрудник')
+    created_date_1 = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
+    salary_payment_1 = models.IntegerField(default=0, blank=True, null=True, verbose_name='1/2 часть')
+    created_date_2 = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
+    salary_payment_2 = models.IntegerField(default=0, blank=True, null=True, verbose_name='2/2 часть')
+    salary_balance = models.IntegerField(default=0, blank=True, null=True, verbose_name='баланс')
+
+    def save(self, *args, **kwargs):
+        self.salary_balance = self.employee.salary - (self.salary_payment_1 + self.salary_payment_2)
+        super(EmployeeSalary, self).save(*args, **kwargs)
+
+    class Meta:
+        db_table = "employee_salary"
+        verbose_name = 'ЗП сотрудника'
+        verbose_name_plural = 'ЗП сотрудника'
 
 
 
@@ -66,7 +82,7 @@ class Clients(models.Model):
         ('Цветочный ряд', 'Цветочный ряд'),
     )
 
-    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата создания')
+    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     city = models.CharField(max_length=100, verbose_name='город', blank=True, null=True)
     address = models.CharField(max_length=255, verbose_name='адрес')
@@ -126,13 +142,12 @@ class IndividualEntrepreneur(models.Model):
         ('Одиночка', 'Одиночка'),
         ('Одиночка солдат', 'Одиночка солдат'),
     )
+    
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата открытия')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     iep_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='ИП')
     type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')
-    email = models.EmailField(blank=True, null=True, verbose_name='электронная почта')
-    password = models.CharField(max_length=100, blank=True, null=True, verbose_name='пароль')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
 
@@ -166,12 +181,12 @@ class IndividualEntrepreneurInfo(models.Model):
 
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
+    iep_name = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
+    email = models.EmailField(blank=True, null=True, verbose_name='логин')
+    password = models.CharField(max_length=100, blank=True, null=True, verbose_name='пароль')
     bank = models.CharField(max_length=100, blank=True, null=True, choices=BANKS, verbose_name='банк')
     password_of_card = models.CharField(max_length=50, null=True, blank=True, verbose_name='пароль карты')
     codeword = models.CharField(max_length=100, blank=True, null=True, verbose_name='кодовое слово')
-
-
 
 
     class Meta:

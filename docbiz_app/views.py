@@ -1,8 +1,4 @@
-from decimal import Decimal
-from unicodedata import decimal
-from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.shortcuts import render, redirect
@@ -58,11 +54,9 @@ def table_trans(request):
         paginator = Paginator(context['transactions'], 20)
         page = request.GET.get('page')
         context['transactions'] = paginator.get_page(page)
-        context['sum_incoming'] = Transactions.objects.aggregate(Sum('incoming'))
-        context['sum_incoming'] = ''.join('{}'.format(val) for key, val in context['sum_incoming'].items())
-        context['sum_expense'] = Transactions.objects.aggregate(Sum('expense'))
-        context['sum_expense'] = ''.join('{}'.format(val) for key, val in context['sum_expense'].items())
-        context['balance'] = format(float(context['sum_incoming'])-float(context['sum_expense']), '.2f')
+        context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
+        context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
+        context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
 
         return render(request, 'table_transaction.html', context)
     else:
