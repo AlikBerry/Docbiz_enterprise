@@ -34,7 +34,7 @@
       <td data-label="АДРЕС">{{ cl.address }}</td>
       <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>
       <td data-label="ОПЛАТА">{{ cl.payment }}</td>
-      <td data-label="КАССА"><a href="">КАССА</a></td>
+      <td data-label="КАССА"><a href="{% url 'cashboxes' id=cl.id%}">КАССА</a></td>
       <td data-label="ТЕРМИНАЛ"><a href="">ТЕРМИНАЛ</a></td>
     </tr>
   {% endfor %}

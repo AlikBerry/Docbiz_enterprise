@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from docbiz_app.forms import LoginForm
+from docbiz_app.forms import LoginForm, AddTransactionForm
 from .models import Transactions, Menu, Employee, Clients, Cashboxes, Terminal
 
 
@@ -88,4 +88,13 @@ def cashboxes(request):
 @login_required(login_url="/login")
 def add_transactions(request):
     context = login_page_data()
-    return render(request, "add_transaction.html", context)
+    if request.method == 'POST':
+       form = AddTransactionForm(request.POST)
+       if form.is_valid():
+           created_date = request.POST.get('created_date')
+           incoming = request.POST.get('incoming')
+           expense = request.POST.get('expense')
+           description = request.POST.get('description')
+           trans = Transactions.objects.create(created_date=created_date, incoming=int(incoming), expense=int(expense), description=description)
+           return redirect('table_trans')
+    return render(request, 'add_trans.html', context)

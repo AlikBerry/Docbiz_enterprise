@@ -5,6 +5,7 @@
 
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
+    <a href="{% url 'add_transaction' %}"><button type="button" class="btn btn-primary btn-lg btn-block" style="background-color: #007bff !important; ">Add Transaction</button></a>
     <table>
   <thead>
     <tr style="background-color: #007bff">
@@ -26,10 +27,10 @@
     </tr>
   {% endfor %}
     <tr>
-        <th  colspan="2" scope="row"><h4>ИТОГ</h4></th>
+        <th><h4>ИТОГ</h4></th>
         <td  data-label="ПРИХОД"><h6>{{ sum_incoming }}</h6></td>
         <td  data-label="РАСХОД"><h6>{{ sum_expense }}</h6></td>
-        <td></td>0
+        <td></td>
         <td data-label="БАЛАНС"><h6>{{ balance }}</h6></td>
     </tr>
   </tbody>

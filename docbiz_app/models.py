@@ -182,7 +182,7 @@ class IndividualEntrepreneurInfo(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     iep_name = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
-    email = models.EmailField(blank=True, null=True, verbose_name='логин')
+    email = models.CharField(max_length=150, blank=True, null=True, verbose_name='логин')
     password = models.CharField(max_length=100, blank=True, null=True, verbose_name='пароль')
     bank = models.CharField(max_length=100, blank=True, null=True, choices=BANKS, verbose_name='банк')
     password_of_card = models.CharField(max_length=50, null=True, blank=True, verbose_name='пароль карты')
