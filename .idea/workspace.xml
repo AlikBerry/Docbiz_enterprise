@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="21f26be7-8a44-41d6-84b7-e9ea7caf76c7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docbiz_app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docbiz_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docbiz_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/docbiz_app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/table_cashbox.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/table_cashbox.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/table_clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/table_clients.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/table_transaction.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/table_transaction.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -194,6 +194,7 @@
       <workItem from="1569520429152" duration="6459000" />
       <workItem from="1569689850961" duration="18679000" />
       <workItem from="1569865612240" duration="5144000" />
+      <workItem from="1569957926346" duration="7122000" />
     </task>
     <servers />
   </component>

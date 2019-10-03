@@ -1,10 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from docbiz_app.forms import LoginForm, AddTransactionForm
-from .models import Transactions, Menu, Employee, Clients, Cashboxes, Terminal
+from django.shortcuts import redirect, render
+from rest_framework import request
+
+from docbiz_app.forms import AddTransactionForm, LoginForm
+
+from .models import Cashboxes, Clients, Employee, Menu, Terminal, Transactions
 
 
 def login_page_data():
@@ -83,10 +86,35 @@ def clients(request):
 def cashboxes(request):
     context = login_page_data()
     context['cashboxes'] = Cashboxes.objects.all()
+    paginator = Paginator(context['cashboxes'], 20)
+    page = request.GET.get('page')
+    context['cashboxes'] = paginator.get_page(page)
     return render(request, 'table_cashbox.html', context)
 
 @login_required(login_url="/login")
+def cashboxes_detail(request, id):
+    context = login_page_data()
+    if id is None:
+        return render(request, 'table_clients.html', context)
+    my_clients = Clients.objects.get(id=id)
+    cashboxes_list = []
+    for i  in  my_clients.cashbox.all():
+        cashboxes_list.append({
+            "created_date":i.created_date,
+            "model_name":i.model_name,
+            "number_of_cashbox":i.number_of_cashbox,
+            "iep":i.iep,
+            "client":i.client
+        })
+
+    context = login_page_data()
+    context["cashbox_detail"] = cashboxes_list
+    return  render(request, 'table_cashbox.html', context)
+
+
+@login_required(login_url="/login")
 def add_transactions(request):
+
     context = login_page_data()
     if request.method == 'POST':
        form = AddTransactionForm(request.POST)
@@ -98,3 +126,37 @@ def add_transactions(request):
            trans = Transactions.objects.create(created_date=created_date, incoming=int(incoming), expense=int(expense), description=description)
            return redirect('table_trans')
     return render(request, 'add_trans.html', context)
+
+@login_required(login_url="/login")
+def terminals(request):
+    context = login_page_data()
+    context['terminals'] = Terminal.objects.all()
+    return render(request, 'table_terminal.html', context)
+
+@login_required(login_url="/login")
+def terminals_detail(request, id):
+    context = login_page_data()
+    if id is None:
+        return render(request, 'table_clients.html', context)
+    my_clients = Clients.objects.get(id=id)
+    terminals_list = []
+    for i  in  my_clients.terminal.all():
+        terminals_list.append({
+            "created_date":i.created_date,
+            "number_of_terminal":i.number_of_terminal,
+            "iep":i.iep,
+            "client":i.client
+        })
+
+    context = login_page_data()
+    context["terminal_detail"] = terminals_list
+    return  render(request, 'table_terminal.html', context)
+
+
+@login_required(login_url="/login")
+def add_cashbox(request):
+    pass
+
+@login_required(login_url="/login")
+def add_terminal(request):
+    pass

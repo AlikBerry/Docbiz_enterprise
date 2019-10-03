@@ -15,43 +15,48 @@
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
-  <h3>КЛИЕНТЫ</h3>
+  <h3>ТЕРМИНАЛЫ</h3>
 </div>
 <table id="myTable">
   <thead>
     <tr style="background-color: #007bff">
-      <th>ДАТА</th>
-      <th>ГОРОД</th>
-      <th>АДРЕС</th>
-      <th>ВИД ДЕЯТЕЛЬНОСТИ</th>
-      <th>ОПЛАТА</th>
-      <th>КАССА</th>
-      <th>ТЕРМИНАЛ</th>
+      <th>ДАТА ПОСТАНОВКИ</th>
+      <th>НОМЕР</th>
+      <th>ИП</th>
+      <th>КЛИЕНТ</th>
     </tr>
   </thead>
   <tbody>
-  {% for cl in clients %}
+  {% for tm in terminals %}
     <tr>
-      <td data-label="ДАТА">{{ cl.created_date }}</td>
-      <td data-label="ГОРОД">{{ cl.city }}</td>
-      <td data-label="АДРЕС">{{ cl.address }}</td>
-      <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>
-      <td data-label="ОПЛАТА">{{ cl.payment }}</td>
-      <td data-label="КАССА"><a href="{% url 'cashboxes_detail' cl.id %}">КАССА</a></td>
-      <td data-label="ТЕРМИНАЛ"><a href="{% url 'terminals_detail' cl.id %}">ТЕРМИНАЛ</a></td>
+      <td data-label="ДАТА ПОСТАНОВКИ">{{ tm.created_date }}</td>
+      <td data-label="НОМЕР">{{ tm.number_of_terminal }}</td>
+      <td data-label="ИП">{{ tm.iep }}</td>
+      <td data-label="КЛИЕНТ">{{ tm.client }}</td>
     </tr>
   {% endfor %}
+
+  {% for td in terminal_detail %}
+        <tr>
+          <td data-label="ДАТА ПОСТАНОВКИ">{{ td.created_date }}</td>
+          <td data-label="НОМЕР">{{ td.number_of_terminal }}</td>
+          <td data-label="ИП">{{ td.iep }}</td>
+          <td data-label="КЛИЕНТ">{{ td.client }}</td>
+        </tr>
+    {% endfor %}
+
 
   </tbody>
 </table>
 
 
-  <button onclick="download();"  class="btn btn-primary" style="display: table;
+  <button onclick="download();" class="btn btn-primary" style="display: table;
   margin-right: auto;
   margin-left: auto;
   text-align: center;
   width: 150px;
   height: 50px"><h4>Скачать</h4></button>
+
 
 
 {#<div class="pagination" style="display: flex;justify-content: center;">#}

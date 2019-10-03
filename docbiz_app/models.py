@@ -108,7 +108,7 @@ class Cashboxes(models.Model):
     model_name = models.CharField(max_length=155, blank=True, null=True, verbose_name='название модели')
     number_of_cashbox = models.CharField(max_length=100, verbose_name='номер кассы')
     iep = models.ForeignKey('IndividualEntrepreneur', blank=True, null=True, on_delete=models.DO_NOTHING, verbose_name='ИП')
-    client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='клиент')
+    client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='cashbox', verbose_name='клиент')
 
 
     def __str__(self):
@@ -124,7 +124,7 @@ class Terminal(models.Model):
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     number_of_terminal = models.CharField(max_length=100, verbose_name='номер терминала')
     iep = models.ForeignKey('IndividualEntrepreneur', blank=True, null=True, on_delete=models.DO_NOTHING, verbose_name='ИП')
-    client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name='клиент')
+    client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='terminal', verbose_name='клиент')
 
     class Meta:
         db_table = "terminals"

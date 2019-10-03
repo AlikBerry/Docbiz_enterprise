@@ -14,50 +14,80 @@
 
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
-<table id="myTable">
-  <thead>
-    <tr style="background-color: #007bff">
-      <th>ДАТА ПОСТАНОВКИ</th>
-      <th>МОДЕЛЬ</th>
-      <th>НОМЕР</th>
-      <th>ИП</th>
-      <th>КЛИЕНТ</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for cash in cashboxes %}
-    <tr>
-      <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date }}</td>
-      <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
-      <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
-      <td data-label="ИП">{{ cash.iep }}</td>
-      <td data-label="КЛИЕНТ">{{ cash.client }}</td>
-    </tr>
-  {% endfor %}
+<div class="alert alert-primary" role="alert" style="text-align: center">
+  <h3>КАССЫ</h3>
+</div>
 
-  </tbody>
-</table>
-<button onclick="download();">Export to Excel</button>
+<div>
+  <table id="myTable">
+    <thead>
+      <tr style="background-color: #007bff">
+        <th>ДАТА ПОСТАНОВКИ</th>
+        <th>МОДЕЛЬ</th>
+        <th>НОМЕР</th>
+        <th>ИП</th>
+        <th>КЛИЕНТ</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for cash in cashboxes %}
+      <tr>
+        <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date }}</td>
+        <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
+        <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
+        <td data-label="ИП">{{ cash.iep }}</td>
+        <td data-label="КЛИЕНТ">{{ cash.client }}</td>
+      </tr>
+    {% endfor %}
+  
+    {% for cs in cashbox_detail %}
+          <tr>
+            <td data-label="ДАТА ПОСТАНОВКИ">{{ cs.created_date }}</td>
+            <td data-label="МОДЕЛЬ">{{ cs.model_name }}</td>
+            <td data-label="НОМЕР">{{ cs.number_of_cashbox }}</td>
+            <td data-label="ИП">{{ cs.iep }}</td>
+            <td data-label="КЛИЕНТ">{{ cs.client }}</td>
+          </tr>
+      {% endfor %}
+  
+  
+    </tbody>
+  </table>
+  
+</div>
+  
 
-{#<div class="pagination" style="display: flex;justify-content: center;">#}
-{#    <span class="step-links">#}
-{#        {% if transactions.has_previous %}#}
-{#            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>#}
-{#            <button><a href="?page={{ transactions.previous_page_number }}">ПРЕД.</a></button>#}
-{#        {% endif %}#}
-{##}
-{#                <span class="current">#}
-{#             {{ transactions.number }} ИЗ {{ transactions.paginator.num_pages }}#}
-{#        </span>#}
-{##}
-{##}
-{##}
-{#        {% if transactions.has_next %}#}
-{#            <button><a href="?page={{ transactions.next_page_number }}">СЛЕД.</a></button>#}
-{#            <button><a href="?page={{ transactions.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>#}
-{#        {% endif %}#}
-{#    </span>#}
-{#</div>#}
+
+
+  <button onclick="download();" class="btn btn-primary" style="display: table;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  width: 150px;
+  height: 50px"><h4>Сачать</h4></button>
+
+
+
+
+<div class="pagination" style="display: flex;justify-content: center;">
+    <span class="step-links">
+        {% if cashboxes.has_previous %}
+            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
+            <button><a href="?page={{ cashboxes.previous_page_number }}">ПРЕД.</a></button>
+        {% endif %}
+
+                <span class="current">
+            {{ cashboxes.number }} ИЗ {{ cashboxes.paginator.num_pages }}
+      </span>
+
+
+
+        {% if cashboxes.has_next %}
+           <button><a href="?page={{ cashboxes.next_page_number }}">СЛЕД.</a></button>
+          <button><a href="?page={{ cashboxes.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+      {% endif %}
+  </span>
+</div>
 
 
 
