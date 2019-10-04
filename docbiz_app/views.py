@@ -80,6 +80,9 @@ def employee(request):
 def clients(request):
     context = login_page_data()
     context['clients'] = Clients.objects.filter(status=True)
+    paginator = Paginator(context['clients'], 20)
+    page = request.GET.get('page')
+    context['clients'] = paginator.get_page(page)
     return render(request, 'table_clients.html', context)
 
 @login_required(login_url="/login")
@@ -131,6 +134,9 @@ def add_transactions(request):
 def terminals(request):
     context = login_page_data()
     context['terminals'] = Terminal.objects.all()
+    paginator = Paginator(context['terminals'], 20)
+    page = request.GET.get('page')
+    context['terminals'] = paginator.get_page(page)
     return render(request, 'table_terminal.html', context)
 
 @login_required(login_url="/login")
@@ -142,10 +148,10 @@ def terminals_detail(request, id):
     terminals_list = []
     for i  in  my_clients.terminal.all():
         terminals_list.append({
-            "created_date":i.created_date,
-            "number_of_terminal":i.number_of_terminal,
-            "iep":i.iep,
-            "client":i.client
+            "created_date": i.created_date,
+            "number_of_terminal": i.number_of_terminal,
+            "iep": i.iep,
+            "client": i.client
         })
 
     context = login_page_data()

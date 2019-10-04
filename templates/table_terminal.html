@@ -53,28 +53,27 @@
   
 
 
-{#<div class="pagination" style="display: flex;justify-content: center;">#}
-{#    <span class="step-links">#}
-{#        {% if transactions.has_previous %}#}
-{#            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>#}
-{#            <button><a href="?page={{ transactions.previous_page_number }}">ПРЕД.</a></button>#}
-{#        {% endif %}#}
-{##}
-{#                <span class="current">#}
-{#             {{ transactions.number }} ИЗ {{ transactions.paginator.num_pages }}#}
-{#        </span>#}
-{##}
-{##}
-{##}
-{#        {% if transactions.has_next %}#}
-{#            <button><a href="?page={{ transactions.next_page_number }}">СЛЕД.</a></button>#}
-{#            <button><a href="?page={{ transactions.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>#}
-{#        {% endif %}#}
-{#    </span>#}
-{#</div>#}
+<div class="pagination" style="display: flex;justify-content: center;">
+   <span class="step-links">
+        {% if terminals.has_previous %}
+            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
+            <button><a href="?page={{ terminals.previous_page_number }}">ПРЕД.</a></button>
+        {% endif %}
+
+                <span class="current">
+            {{ terminals.number }} ИЗ {{ terminals.paginator.num_pages }}
+       </span>
 
 
-  <button onclick="download();" class="btn btn-primary" ><h4>Скачать</h4></button>
+       {% if terminals.has_next %}
+            <button><a href="?page={{ terminals.next_page_number }}">СЛЕД.</a></button>
+            <button><a href="?page={{ terminals.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+        {% endif %}
+   </span>
+</div>
+
+
+  <button onclick="download();" class="btn btn-success"><h4>Скачать</h4></button>
 
 
 
