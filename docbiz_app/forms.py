@@ -7,12 +7,11 @@ class LoginForm(forms.Form):
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
-class AddTransactionForm(forms.Form):
-    created_date = forms.DateField(label='created_date')
-    incoming = forms.IntegerField(label='incoming')
-    expense = forms.IntegerField(label='expense')
-    description = forms.CharField(label='description')
-
+class TransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transactions
+        fields = ['created_date', 'incoming', 'expense', 'description']
+      
 
 
 

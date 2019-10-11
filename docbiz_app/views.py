@@ -2,10 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from rest_framework import request
-
-from docbiz_app.forms import AddTransactionForm, LoginForm
+from django.contrib import messages
+from docbiz_app.forms import TransactionForm, LoginForm
 
 from .models import Cashboxes, Clients, Employee, Menu, Terminal, Transactions
 
@@ -116,11 +116,11 @@ def cashboxes_detail(request, id):
 
 
 @login_required(login_url="/login")
-def add_transactions(request):
+def add_transaction(request):
 
     context = login_page_data()
     if request.method == 'POST':
-       form = AddTransactionForm(request.POST)
+       form = TransactionForm(request.POST)
        if form.is_valid():
            created_date = request.POST.get('created_date')
            incoming = request.POST.get('incoming')
@@ -128,7 +128,20 @@ def add_transactions(request):
            description = request.POST.get('description')
            trans = Transactions.objects.create(created_date=created_date, incoming=int(incoming), expense=int(expense), description=description)
            return redirect('table_trans')
-    return render(request, 'add_trans.html', context)
+    return render(request, 'transaction_form.html', context)
+
+
+@login_required(login_url="/login")
+def update_transaction(request, id):
+    context = login_page_data()
+    transaction = Transactions.objects.get(id=id)
+    form = TransactionForm(request.POST, instance = transaction)
+    if form.is_valid():  
+        form.save()  
+        return redirect("/table_trans")  
+    return render(request, 'update_transaction_form.html', {'transaction': transaction}, context)  
+
+
 
 @login_required(login_url="/login")
 def terminals(request):
@@ -158,11 +171,16 @@ def terminals_detail(request, id):
     context["terminal_detail"] = terminals_list
     return  render(request, 'table_terminal.html', context)
 
-
 @login_required(login_url="/login")
-def add_cashbox(request):
-    pass
-
-@login_required(login_url="/login")
-def add_terminal(request):
-    pass
+def delete_transaction(request, id):
+    context = {}
+    transaction = Transactions.objects.get(id=id) 
+    if transaction:
+        if request.method == 'POST':
+            transaction.delete()
+            messages.success(request, 'Успешно удалено!')  
+            return redirect('table_trans')
+        context['transaction'] = transaction
+        return render(request, 'confirm.html', context)
+    return redirect("table_trans")  
+    

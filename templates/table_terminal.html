@@ -29,7 +29,7 @@
   <tbody>
   {% for tm in terminals %}
     <tr>
-      <td data-label="ДАТА ПОСТАНОВКИ">{{ tm.created_date }}</td>
+      <td data-label="ДАТА ПОСТАНОВКИ">{{ tm.created_date|date:'d.m.Y' }}</td>
       <td data-label="НОМЕР">{{ tm.number_of_terminal }}</td>
       <td data-label="ИП">{{ tm.iep }}</td>
       <td data-label="КЛИЕНТ">{{ tm.client }}</td>
@@ -38,7 +38,7 @@
 
   {% for td in terminal_detail %}
         <tr>
-          <td data-label="ДАТА ПОСТАНОВКИ">{{ td.created_date }}</td>
+          <td data-label="ДАТА ПОСТАНОВКИ">{{ td.created_date|date:'d.m.Y' }}</td>
           <td data-label="НОМЕР">{{ td.number_of_terminal }}</td>
           <td data-label="ИП">{{ td.iep }}</td>
           <td data-label="КЛИЕНТ">{{ td.client }}</td>

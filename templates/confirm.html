@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<form method="post" action="{% url 'delete_transaction' transaction.id %}">
+  {% csrf_token %}
+  <h3 class="text-success">`{{ transaction.description }}` вы уверены что хотите удалить эту запись?</h3>
+  <button type="submit" class="btn btn-danger">УДАЛИТЬ</button>
+</form>
+
+{% endblock %}

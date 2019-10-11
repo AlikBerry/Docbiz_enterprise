@@ -35,16 +35,31 @@
           <th>РАСХОД</th>
           <th>НАЗНАЧЕНИЕ</th>
           <th>БАЛАНС</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-      {% for i in transactions %}
+      {% for tr in transactions %}
         <tr>
-          <td data-label="ДАТА">{{ i.created_date }}</td>
-          <td data-label="ПРИХОД">{{ i.incoming }}</td>
-          <td data-label="РАСХОД">{{ i.expense }}</td>
-          <td data-label="НАЗНАЧЕНИЕ">{{ i.description }}</td>
-          <td data-label="БАЛАНС">{{ i.balance }}</td>
+          <td data-label="ДАТА">{{ tr.created_date|date:'d.m.Y' }}</td>
+          <td data-label="ПРИХОД">{{ tr.incoming }}</td>
+          <td data-label="РАСХОД">{{ tr.expense }}</td>
+          <td data-label="НАЗНАЧЕНИЕ">{{ tr.description }}</td>
+          <td data-label="БАЛАНС">{{ tr.balance }}</td>
+          <td>
+              <a href="{% url 'update_transaction' tr.id %}">
+                  <button class="btn btn-success update-btn" data-toggle="modal"
+                    data-target="#updateTransaction">UPDATE</button>
+              </a>
+
+          </td>
+          <td>
+              <a href="{% url 'delete_transaction' tr.id %}">
+                <button class="btn btn-danger delete-btn" data-toggle="modal"
+                    data-target="#deleteTransaction">DELETE</button>
+              </a>
+          </td>
         </tr>
       {% endfor %}
         <tr>
@@ -53,6 +68,8 @@
             <td  data-label="РАСХОД"><h6>{{ sum_expense }}</h6></td>
             <td></td>
             <td data-label="БАЛАНС"><h6>{{ balance }}</h6></td>
+            <td></td>
+            <td></td>
         </tr>
       </tbody>
     </table>

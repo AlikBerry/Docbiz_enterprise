@@ -32,7 +32,7 @@
   <tbody>
   {% for cl in clients %}
     <tr>
-      <td data-label="ДАТА">{{ cl.created_date }}</td>
+      <td data-label="ДАТА">{{ cl.created_date|date:'d.m.Y' }}</td>
       <td data-label="ГОРОД">{{ cl.city }}</td>
       <td data-label="АДРЕС">{{ cl.address }}</td>
       <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>

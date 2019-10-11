@@ -32,7 +32,7 @@
     <tbody>
     {% for cash in cashboxes %}
       <tr>
-        <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date }}</td>
+        <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date|date:'d.m.Y' }}</td>
         <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
         <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
         <td data-label="ИП">{{ cash.iep }}</td>
@@ -42,7 +42,7 @@
   
     {% for cs in cashbox_detail %}
           <tr>
-            <td data-label="ДАТА ПОСТАНОВКИ">{{ cs.created_date }}</td>
+            <td data-label="ДАТА ПОСТАНОВКИ">{{ cs.created_date|date:'d.m.Y' }}</td>
             <td data-label="МОДЕЛЬ">{{ cs.model_name }}</td>
             <td data-label="НОМЕР">{{ cs.number_of_cashbox }}</td>
             <td data-label="ИП">{{ cs.iep }}</td>
