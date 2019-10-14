@@ -130,7 +130,6 @@ def add_transaction(request):
            return redirect('table_trans')
     return render(request, 'transaction_form.html', context)
 
-
 @login_required(login_url="/login")
 def update_transaction(request, id):
     context = login_page_data()
@@ -138,10 +137,21 @@ def update_transaction(request, id):
     form = TransactionForm(request.POST, instance = transaction)
     if form.is_valid():  
         form.save()  
-        return redirect("/table_trans")  
-    return render(request, 'update_transaction_form.html', {'transaction': transaction}, context)  
+        return redirect("/table_trans")
+    return render(request, 'update_transaction_form.html', {'transaction': transaction})  
 
-
+@login_required(login_url="/login")
+def delete_transaction(request, id):
+    context = login_page_data()
+    transaction = Transactions.objects.get(id=id) 
+    if transaction:
+        if request.method == 'POST':
+            transaction.delete()  
+            return redirect('table_trans')
+        context['transaction'] = transaction
+        return render(request, 'confirm.html', context)
+    return redirect("table_trans")  
+    
 
 @login_required(login_url="/login")
 def terminals(request):
@@ -171,16 +181,3 @@ def terminals_detail(request, id):
     context["terminal_detail"] = terminals_list
     return  render(request, 'table_terminal.html', context)
 
-@login_required(login_url="/login")
-def delete_transaction(request, id):
-    context = {}
-    transaction = Transactions.objects.get(id=id) 
-    if transaction:
-        if request.method == 'POST':
-            transaction.delete()
-            messages.success(request, 'Успешно удалено!')  
-            return redirect('table_trans')
-        context['transaction'] = transaction
-        return render(request, 'confirm.html', context)
-    return redirect("table_trans")  
-    

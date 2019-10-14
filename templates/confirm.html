@@ -3,10 +3,36 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<form method="post" action="{% url 'delete_transaction' transaction.id %}">
+<div class="alert alert-primary" role="alert" style="text-align: center">
+    <h3>Удаление записи</h3>
+  </div>
+<form method="POST" action="{% url 'delete_transaction' transaction.id %}">
   {% csrf_token %}
-  <h3 class="text-success">`{{ transaction.description }}` вы уверены что хотите удалить эту запись?</h3>
-  <button type="submit" class="btn btn-danger">УДАЛИТЬ</button>
+  <div style="display: table;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  width: 750px;
+  height: 450px">
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h6 class="display-4">Вы уверены что хотите удалить эту запись?</h6>
+          <p class="lead">Дата: {{ transaction.created_date }}</p>
+          <p class="lead">Приход: {{ transaction.incoming }}</p>
+          <p class="lead">Расход: {{ transaction.expense }}</p>
+          <p class="lead">Назначение: {{ transaction.description }}</p>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 200px;
+    height: 50px">ПОДТВЕРДИТЬ</button>
+    
+    <a href="{% url 'table_trans' %}"><button type="button" class="btn btn-danger" style="width: 200px;
+      height: 50px">ОТМЕНИТЬ</button></a>
+    </div>
 </form>
+
+
 
 {% endblock %}

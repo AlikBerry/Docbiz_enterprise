@@ -48,20 +48,20 @@
           <td data-label="НАЗНАЧЕНИЕ">{{ tr.description }}</td>
           <td data-label="БАЛАНС">{{ tr.balance }}</td>
           <td>
+      
               <a href="{% url 'update_transaction' tr.id %}">
                   <button class="btn btn-success update-btn" data-toggle="modal"
-                    data-target="#updateTransaction">UPDATE</button>
+                    data-target="#updateTransaction">РЕДАКТИРОВАТЬ</button>
               </a>
 
           </td>
           <td>
               <a href="{% url 'delete_transaction' tr.id %}">
-                <button class="btn btn-danger delete-btn" data-toggle="modal"
-                    data-target="#deleteTransaction">DELETE</button>
+                  <button type="button" class="btn btn-danger">УДАЛИТЬ</button>
               </a>
           </td>
         </tr>
-      {% endfor %}
+        {% endfor %}
         <tr>
             <th><h4>ИТОГ</h4></th>
             <td  data-label="ПРИХОД"><h6>{{ sum_incoming }}</h6></td>
@@ -75,8 +75,6 @@
     </table>
 </div>
 
-
-  
 
 
 <div class="pagination" style="display: flex;justify-content: center;">
