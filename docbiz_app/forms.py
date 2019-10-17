@@ -13,7 +13,14 @@ class TransactionForm(forms.ModelForm):
         fields = ['created_date', 'incoming', 'expense', 'description']
       
 
+class TransactionSearchForm(forms.Form):
+    description =  forms.CharField(
+                    required = False,
+                    label='Search name or surname!',
+                    widget=forms.TextInput(attrs={'placeholder': 'search here!'})
+                  )
 
+    
 
 
 

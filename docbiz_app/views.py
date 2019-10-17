@@ -1,11 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from rest_framework import request
-from django.contrib import messages
-from docbiz_app.forms import TransactionForm, LoginForm
+
+from search_views.filters import BaseFilter
+from search_views.search import SearchListView
+
+from docbiz_app.forms import LoginForm, TransactionForm
 
 from .models import Cashboxes, Clients, Employee, Menu, Terminal, Transactions
 
@@ -54,7 +58,7 @@ def table_trans(request):
     if request.user.is_superuser:
         context = login_page_data()
         context['transactions'] = Transactions.objects.all().order_by('created_date')
-        paginator = Paginator(context['transactions'], 20)
+        paginator = Paginator(context['transactions'], 50)
         page = request.GET.get('page')
         context['transactions'] = paginator.get_page(page)
         context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
@@ -80,7 +84,7 @@ def employee(request):
 def clients(request):
     context = login_page_data()
     context['clients'] = Clients.objects.filter(status=True)
-    paginator = Paginator(context['clients'], 20)
+    paginator = Paginator(context['clients'], 50)
     page = request.GET.get('page')
     context['clients'] = paginator.get_page(page)
     return render(request, 'table_clients.html', context)
@@ -89,7 +93,7 @@ def clients(request):
 def cashboxes(request):
     context = login_page_data()
     context['cashboxes'] = Cashboxes.objects.all()
-    paginator = Paginator(context['cashboxes'], 20)
+    paginator = Paginator(context['cashboxes'], 50)
     page = request.GET.get('page')
     context['cashboxes'] = paginator.get_page(page)
     return render(request, 'table_cashbox.html', context)
@@ -157,7 +161,7 @@ def delete_transaction(request, id):
 def terminals(request):
     context = login_page_data()
     context['terminals'] = Terminal.objects.all()
-    paginator = Paginator(context['terminals'], 20)
+    paginator = Paginator(context['terminals'], 50)
     page = request.GET.get('page')
     context['terminals'] = paginator.get_page(page)
     return render(request, 'table_terminal.html', context)
