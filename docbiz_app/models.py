@@ -17,7 +17,7 @@ class Menu(models.Model):
         verbose_name_plural = 'Меню'
         ordering = ['order']
 
-class Transactions(models.Model):
+class Transactions(models.Model): 
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата публикации')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     incoming = models.IntegerField(blank=True, null=True, default=0, verbose_name='приход')

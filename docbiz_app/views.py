@@ -2,14 +2,15 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Sum
+from django.db.models import Sum, Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from rest_framework import request
-
 from search_views.filters import BaseFilter
 from search_views.search import SearchListView
 
 from docbiz_app.forms import LoginForm, TransactionForm
+
 
 from .models import Cashboxes, Clients, Employee, Menu, Terminal, Transactions
 
@@ -48,6 +49,11 @@ def login_view(request):
     else:
         return redirect("home")
 
+        
+def logout_view(request):
+    logout(request)
+    return redirect("home")
+
 @login_required(login_url="/login")
 def base(request):
     context = login_page_data()
@@ -58,21 +64,40 @@ def table_trans(request):
     if request.user.is_superuser:
         context = login_page_data()
         context['transactions'] = Transactions.objects.all().order_by('created_date')
-        paginator = Paginator(context['transactions'], 50)
+        paginator = Paginator(context['transactions'], 100)
         page = request.GET.get('page')
         context['transactions'] = paginator.get_page(page)
         context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
         context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
         context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
 
+        ''' After code is filtering user queryset '''
+        
+        if  request.GET.get('start_date') and request.GET.get('end_date'):
+            start_date = request.GET.get('start_date')
+            end_date = request.GET.get('end_date')
+            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date))
+            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
+            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
+            context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
+            return render(request, "table_transaction.html", context)
+
+        if request.GET.get('description'):
+            description = request.GET.get('description')
+            context['queryset_1'] = Transactions.objects.filter(description=description)
+            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
+            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('expense')).items())
+            context['balance'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('balance')).items())
+            return render(request, "table_transaction.html", context)
+            
         return render(request, 'table_transaction.html', context)
+
     else:
         context = login_page_data()
         return render(request, 'base.html', context)
 
-def logout_view(request):
-    logout(request)
-    return redirect("home")
+
+
 
 @login_required(login_url="/login")
 def employee(request):
@@ -83,10 +108,28 @@ def employee(request):
 @login_required(login_url="/login")
 def clients(request):
     context = login_page_data()
-    context['clients'] = Clients.objects.filter(status=True)
-    paginator = Paginator(context['clients'], 50)
+    context['clients'] = Clients.objects.all()
+    paginator = Paginator(context['clients'], 70)
     page = request.GET.get('page')
     context['clients'] = paginator.get_page(page)
+
+    ''' After code is filtering user queryset '''
+
+    if  request.GET.get('start_date') and request.GET.get('end_date'):
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        context['queryset'] = Clients.objects.filter(created_date__range=(start_date, end_date))
+        return render(request, 'table_clients.html', context)
+    if request.GET.get('city') or request.GET.get('address'):
+        city = request.GET.get('city')
+        address = request.GET.get('address')
+        context['queryset_1'] = Clients.objects.filter(city=city, address=address)
+        return render(request, 'table_clients.html', context)
+    if request.GET.get('type_of_activity'):
+        type_of_activity = request.GET.get('type_of_activity')
+        context['queryset_2'] = Clients.objects.filter(type_of_activity=type_of_activity)
+        return render(request, 'table_clients.html', context)
+
     return render(request, 'table_clients.html', context)
 
 @login_required(login_url="/login")
@@ -96,6 +139,7 @@ def cashboxes(request):
     paginator = Paginator(context['cashboxes'], 50)
     page = request.GET.get('page')
     context['cashboxes'] = paginator.get_page(page)
+
     return render(request, 'table_cashbox.html', context)
 
 @login_required(login_url="/login")
@@ -184,4 +228,6 @@ def terminals_detail(request, id):
     context = login_page_data()
     context["terminal_detail"] = terminals_list
     return  render(request, 'table_terminal.html', context)
+
+
 

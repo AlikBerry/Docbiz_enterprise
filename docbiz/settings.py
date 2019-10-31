@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'daterange_filter',
+    'django_filters',
+    'bootstrapform',
     'widget_tweaks',
     'docbiz_app'
 ]
@@ -91,7 +93,7 @@ WSGI_APPLICATION = 'docbiz.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #         'NAME': 'docbiz_db',
 #         'USER': 'postgres',
 #         'PASSWORD': 'sudo180',

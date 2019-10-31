@@ -3,6 +3,8 @@
 {% load widget_tweaks %}
 {% block content %}
 
+
+   
     <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.core.min.js" ></script>
     <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/ods.min.js"></script>
     <script type="text/javascript" src="http://sheetjs.com/demos/Blob.js"></script>
@@ -12,23 +14,57 @@
         function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
     </script>
 
+
+<style>
+  input[type='text']::placeholder{
+    color: black;
+  }
+  input{
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+</style>
+
+
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
   <h3>ТРАНЗАКЦИИ</h3>
 </div>
-<div>
-  <a href="{% url 'add_transaction' %}"><button type="button" class="btn btn-primary btn-lg" style="display: table;
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
-    width: 250px;
-    height: 50px">Добавить Транзакцию</button></a>
 
+<div style="margin-bottom:1em;">
+    <form class="form-inline" method="GET">
+    
+        <div class="form-group">
+          <input name="start_date"  type="text" class="form-control" placeholder="Дата начальная" onfocus="(this.type='date')"/>
+        </div>
+        
+        <div class="form-group" >
+          <input name="end_date"  type="text" class="form-control" placeholder="Дата конечная" onfocus="(this.type='date')" />
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control" name="description" placeholder="Назначение">
+        </div>
+        <button type="submit" class="btn btn-primary">Фильтр</button>
+      </form>      
 </div>
+
+    <div>
+        <button onclick="window.location.href='{% url 'add_transaction' %}';"
+        type="button" class="btn btn-primary btn-lg" style="display: table;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+        width: 250px;
+        height: 50px"> Добавить Транзакцию </button>
+    </div>
+    
+  
+
 
     
 <div>
-    <table>
+    <table  class="display">
       <thead>
         <tr style="background-color: #007bff">
           <th>ДАТА</th>
@@ -41,28 +77,72 @@
         </tr>
       </thead>
       <tbody>
-      {% for tr in transactions %}
-        <tr>
-          <td data-label="ДАТА">{{ tr.created_date|date:'d.m.Y' }}</td>
-          <td data-label="ПРИХОД">{{ tr.incoming }}</td>
-          <td data-label="РАСХОД">{{ tr.expense }}</td>
-          <td data-label="НАЗНАЧЕНИЕ">{{ tr.description }}</td>
-          <td data-label="БАЛАНС">{{ tr.balance }}</td>
-          <td>
-      
-              <a href="{% url 'update_transaction' tr.id %}">
-                  <button class="btn btn-success update-btn" data-toggle="modal"
-                    data-target="#updateTransaction">РЕДАКТИРОВАТЬ</button>
-              </a>
+        
+      {% if queryset %}
 
-          </td>
-          <td>
-              <a href="{% url 'delete_transaction' tr.id %}">
-                  <button type="button" class="btn btn-danger">УДАЛИТЬ</button>
-              </a>
-          </td>
-        </tr>
+          {% for t in queryset %}
+
+            <tr>
+              <td data-label="ДАТА">{{ t.created_date|date:'d.m.Y' }}</td>
+              <td data-label="ПРИХОД">{{ t.incoming }}</td>
+              <td data-label="РАСХОД">{{ t.expense }}</td>
+              <td data-label="НАЗНАЧЕНИЕ">{{ t.description }}</td>
+              <td data-label="БАЛАНС">{{ t.balance }}</td>
+              <td>
+                <button onclick="window.location.href='{% url 'update_transaction' t.id %}';" type="button" class="btn btn-success update-btn">РЕДАКТИРОВАТЬ</button>
+              </td>
+              <td>
+                <button onclick="window.location.href='{% url 'delete_transaction' t.id %}'" type="button" class="btn btn-danger">УДАЛИТЬ</button>
+              </td>
+            </tr>
+              
+            {% endfor %}
+
+           
+
+      {% elif queryset_1 %}
+
+        {%for t in queryset_1%}
+          <tr>
+            <td data-label="ДАТА">{{ t.created_date|date:'d.m.Y' }}</td>
+            <td data-label="ПРИХОД">{{ t.incoming }}</td>
+            <td data-label="РАСХОД">{{ t.expense }}</td>
+            <td data-label="НАЗНАЧЕНИЕ">{{ t.description }}</td>
+            <td data-label="БАЛАНС">{{ t.balance }}</td>
+            <td>
+            <button onclick="window.location.href='{% url 'update_transaction' t.id %}';" type="button" class="btn btn-success update-btn">РЕДАКТИРОВАТЬ</button>
+            </td>
+            <td>
+            <button onclick="window.location.href='{% url 'delete_transaction' t.id %}'" type="button" class="btn btn-danger">УДАЛИТЬ</button>
+            </td>
+          </tr>    
+  
         {% endfor %}
+
+        
+      
+      {% else %}
+
+        {% for tr in transactions %}
+
+          <tr>
+            <td data-label="ДАТА">{{ tr.created_date|date:'d.m.Y' }}</td>
+            <td data-label="ПРИХОД">{{ tr.incoming }}</td>
+            <td data-label="РАСХОД">{{ tr.expense }}</td>
+            <td data-label="НАЗНАЧЕНИЕ">{{ tr.description }}</td>
+            <td data-label="БАЛАНС">{{ tr.balance }}</td>
+            <td>
+                <button onclick="window.location.href='{% url 'update_transaction' tr.id %}';" type="button" class="btn btn-success update-btn">РЕДАКТИРОВАТЬ</button>
+              </td>
+              <td>
+                <button onclick="window.location.href='{% url 'delete_transaction' tr.id %}'" type="button" class="btn btn-danger">УДАЛИТЬ</button>
+              </td>
+          </tr>
+          
+          {% endfor %}
+
+        {% endif %}
+     
         <tr>
             <th><h4>ИТОГ</h4></th>
             <td  data-label="ПРИХОД"><h6>{{ sum_incoming }}</h6></td>
@@ -101,6 +181,6 @@
 
   <button onclick="download();" class="btn btn-success" ><h4>Скачать</h4></button>
 
-
+  
 
 {% endblock %}
