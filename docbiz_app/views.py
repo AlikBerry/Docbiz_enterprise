@@ -123,7 +123,7 @@ def clients(request):
     if request.GET.get('city') or request.GET.get('address'):
         city = request.GET.get('city')
         address = request.GET.get('address')
-        context['queryset_1'] = Clients.objects.filter(Q(city=city) | Q(address=address))
+        context['queryset_1'] = Clients.objects.filter(Q(city__in=city) | Q(address__in=address))
         return render(request, 'table_clients.html', context)
     if request.GET.get('type_of_activity'):
         type_of_activity = request.GET.get('type_of_activity')
