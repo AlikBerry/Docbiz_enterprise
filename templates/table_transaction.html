@@ -97,9 +97,27 @@
             </tr>
               
             {% endfor %}
+         
+      {% elif queryset_1 %}
+         
+         {% for t in queryset_1 %}
 
+            <tr>
+              <td data-label="ДАТА">{{ t.created_date|date:'d.m.Y' }}</td>
+              <td data-label="ПРИХОД">{{ t.incoming }}</td>
+              <td data-label="РАСХОД">{{ t.expense }}</td>
+              <td data-label="НАЗНАЧЕНИЕ">{{ t.description }}</td>
+              <td data-label="БАЛАНС">{{ t.balance }}</td>
+              <td>
+                <button onclick="window.location.href='{% url 'update_transaction' t.id %}';" type="button" class="btn btn-success update-btn">РЕДАКТИРОВАТЬ</button>
+              </td>
+              <td>
+                <button onclick="window.location.href='{% url 'delete_transaction' t.id %}'" type="button" class="btn btn-danger">УДАЛИТЬ</button>
+              </td>
+            </tr>
+              
+            {% endfor %}
         
-      
       {% else %}
 
         {% for tr in transactions %}
@@ -157,6 +175,29 @@
         {% endif %}
     </span>
 </div>
+
+{% elif queryset_1 %}
+   
+   <div class="pagination" style="display: flex;justify-content: center;">
+    <span class="step-links">
+        {% if queryset_1.has_previous %}
+            <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
+            <button><a href="?page={{ queryset_1.previous_page_number }}">ПРЕД.</a></button>
+        {% endif %}
+
+                <span class="current">
+             {{ queryset_1.number }} ИЗ {{ queryset_1.paginator.num_pages }}
+        </span>
+
+
+
+        {% if queryset_1.has_next %}
+            <button><a href="?page={{ queryset_1.next_page_number }}">СЛЕД.</a></button>
+            <button><a href="?page={{ queryset_1.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+        {% endif %}
+    </span>
+</div>
+
 
 {% else %}
 
