@@ -98,27 +98,6 @@
               
             {% endfor %}
 
-           
-
-      {% elif queryset_1 %}
-
-        {%for t in queryset_1%}
-          <tr>
-            <td data-label="ДАТА">{{ t.created_date|date:'d.m.Y' }}</td>
-            <td data-label="ПРИХОД">{{ t.incoming }}</td>
-            <td data-label="РАСХОД">{{ t.expense }}</td>
-            <td data-label="НАЗНАЧЕНИЕ">{{ t.description }}</td>
-            <td data-label="БАЛАНС">{{ t.balance }}</td>
-            <td>
-            <button onclick="window.location.href='{% url 'update_transaction' t.id %}';" type="button" class="btn btn-success update-btn">РЕДАКТИРОВАТЬ</button>
-            </td>
-            <td>
-            <button onclick="window.location.href='{% url 'delete_transaction' t.id %}'" type="button" class="btn btn-danger">УДАЛИТЬ</button>
-            </td>
-          </tr>    
-  
-        {% endfor %}
-
         
       
       {% else %}
@@ -157,27 +136,51 @@
 </div>
 
 
+{% if queryset %}
 
-<div class="pagination" style="display: flex;justify-content: center;">
+   <div class="pagination" style="display: flex;justify-content: center;">
     <span class="step-links">
-        {% if transactions.has_previous %}
+        {% if queryset.has_previous %}
             <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
-            <button><a href="?page={{ transactions.previous_page_number }}">ПРЕД.</a></button>
+            <button><a href="?page={{ queryset.previous_page_number }}">ПРЕД.</a></button>
         {% endif %}
 
                 <span class="current">
-             {{ transactions.number }} ИЗ {{ transactions.paginator.num_pages }}
+             {{ queryset.number }} ИЗ {{ queryset.paginator.num_pages }}
         </span>
 
 
 
-        {% if transactions.has_next %}
-            <button><a href="?page={{ transactions.next_page_number }}">СЛЕД.</a></button>
-            <button><a href="?page={{ transactions.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+        {% if queryset.has_next %}
+            <button><a href="?page={{ queryset.next_page_number }}">СЛЕД.</a></button>
+            <button><a href="?page={{ queryset.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
         {% endif %}
     </span>
 </div>
 
+{% else %}
+
+   <div class="pagination" style="display: flex;justify-content: center;">
+       <span class="step-links">
+           {% if transactions.has_previous %}
+               <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
+               <button><a href="?page={{ transactions.previous_page_number }}">ПРЕД.</a></button>
+           {% endif %}
+
+                   <span class="current">
+                {{ transactions.number }} ИЗ {{ transactions.paginator.num_pages }}
+           </span>
+
+
+
+           {% if transactions.has_next %}
+               <button><a href="?page={{ transactions.next_page_number }}">СЛЕД.</a></button>
+               <button><a href="?page={{ transactions.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+           {% endif %}
+       </span>
+   </div>
+
+{% endif %}
 
   <button onclick="download();" class="btn btn-success" ><h4>Скачать</h4></button>
 
