@@ -89,12 +89,12 @@ def table_trans(request):
         if request.GET.get('description'):
             description = request.GET.get('description')
             context['queryset_1'] = Transactions.objects.filter(description__icontains=description)
-            paginator = Paginator(context['queryset'], 100)
+            paginator = Paginator(context['queryset_1'], 100)
             page = request.GET.get('page')
             context['queryset_1'] = paginator.get_page(page)
-            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
-            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
-            context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
+            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
+            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('expense')).items())
+            context['balance'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('balance')).items())
             return render(request, "table_transaction.html", context)
         return render(request, 'table_transaction.html', context)
 
