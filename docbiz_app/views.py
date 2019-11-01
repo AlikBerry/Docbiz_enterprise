@@ -84,7 +84,7 @@ def table_trans(request):
 
         if request.GET.get('description'):
             description = request.GET.get('description')
-            context['queryset_1'] = Transactions.objects.filter(description=description)
+            context['queryset_1'] = Transactions.objects.filter(Q(description__icontains=description))
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('expense')).items())
             context['balance'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('balance')).items())
