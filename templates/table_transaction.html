@@ -4,7 +4,7 @@
 {% block content %}
 
 
-   
+ 
     <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.core.min.js" ></script>
     <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/ods.min.js"></script>
     <script type="text/javascript" src="http://sheetjs.com/demos/Blob.js"></script>
@@ -12,7 +12,7 @@
     <script type="text/javascript" src="http://sheetjs.com/demos/Export2Excel.js"></script>
     <script>
         $(document).ready(function() {
-            $('myTable').DataTable( {
+            $('#example').DataTable( {
                      dom: 'Bfrtip',
                      buttons: [
                      'copy', 'csv', 'excel', 'pdf', 'print'
@@ -67,11 +67,15 @@
     </div>
     
   
-
+<button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="example" type="button"><span>Copy</span></button>
+<button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="example" type="button"><span>CSV</span></button>
+<button class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="example" type="button"><span>Excel</span></button> 
+<button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="example" type="button"><span>PDF</span></button> 
+<button class="dt-button buttons-print" tabindex="0" aria-controls="example" type="button"><span>Print</span></button>
 
     
 <div>
-    <table  class="display" id="myTable">
+    <table  class="display" id="example">
       <thead>
         <tr style="background-color: #007bff">
           <th>ДАТА</th>
