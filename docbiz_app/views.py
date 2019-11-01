@@ -77,7 +77,7 @@ def table_trans(request):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
             description = request.GET.get('description')
-            context['queryset'] = Transactions.objects.filter(Q(created_date__range=(start_date, end_date)) | Q(description__icontains=description))
+            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date)) | Q(description__icontains=description))
             paginator = Paginator(context['queryset'], 100)
             page = request.GET.get('page')
             context['queryset'] = paginator.get_page(page)
