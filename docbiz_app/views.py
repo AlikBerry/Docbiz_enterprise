@@ -73,11 +73,11 @@ def table_trans(request):
 
         ''' After code is filtering user queryset '''
         
-        if  request.GET.get('start_date') and request.GET.get('end_date') or request.GET.get('description'):
+        if  request.GET.get('start_date') and request.GET.get('end_date'):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
             description = request.GET.get('description')
-            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date) | Q(description__icontains=description))
+            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date))
             paginator = Paginator(context['queryset'], 100)
             page = request.GET.get('page')
             context['queryset'] = paginator.get_page(page)
@@ -85,7 +85,17 @@ def table_trans(request):
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
             context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
             return render(request, "table_transaction.html", context)
-            
+        
+        if request.GET.get('description'):
+            description = request.GET.get('description')
+            context['queryset_1'] = Transactions.objects.filter(description__icontains=description)
+            paginator = Paginator(context['queryset'], 100)
+            page = request.GET.get('page')
+            context['queryset_1'] = paginator.get_page(page)
+            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
+            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
+            context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
+            return render(request, "table_transaction.html", context)
         return render(request, 'table_transaction.html', context)
 
     else:
