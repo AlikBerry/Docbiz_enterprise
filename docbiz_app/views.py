@@ -76,7 +76,6 @@ def table_trans(request):
         if  request.GET.get('start_date') and request.GET.get('end_date'):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
-            description = request.GET.get('description')
             context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date))
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
