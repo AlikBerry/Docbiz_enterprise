@@ -11,7 +11,36 @@
     <script type="text/javascript" src="http://sheetjs.com/demos/FileSaver.js"></script>
     <script type="text/javascript" src="http://sheetjs.com/demos/Export2Excel.js"></script>
     <script>
-        function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
+         function exportTableToExcel(tableID, filename = ''){
+                        var downloadLink;
+                        var dataType = 'application/vnd.ms-excel';
+                        var tableSelect = document.getElementById(tableID);
+                        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+                        // Specify file name
+                        filename = filename?filename+'.xls':'excel_data.xls';
+
+                        // Create download link element
+                        downloadLink = document.createElement("a");
+
+                        document.body.appendChild(downloadLink);
+
+                        if(navigator.msSaveOrOpenBlob){
+                            var blob = new Blob(['\ufeff', tableHTML], {
+                                type: dataType
+                            });
+                            navigator.msSaveOrOpenBlob( blob, filename);
+                        }else{
+                            // Create a link to the file
+                            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+                            // Setting the file name
+                            downloadLink.download = filename;
+
+                            //triggering the function
+                            downloadLink.click();
+                        }
+                    }
     </script>
 
 
@@ -63,7 +92,7 @@
 
     
 <div>
-    <table  class="display" id="myTable">
+    <table  class="display" id="tblData
       <thead>
         <tr style="background-color: #007bff">
           <th>ДАТА</th>
@@ -222,7 +251,7 @@
 
 {% endif %}
 
-  <button onclick="download();" class="btn btn-success" ><h4>Скачать</h4></button>
+  <button onclick="exportTableToExcel('tblData', 'members')" class="btn btn-success" ><h4>Скачать</h4></button>
 
   
 
