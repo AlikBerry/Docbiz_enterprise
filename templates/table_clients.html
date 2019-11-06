@@ -3,52 +3,7 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<link id="themecss" rel="stylesheet" type="text/css" href="//www.shieldui.com/shared/components/latest/css/light/all.min.css" />
-<script type="text/javascript" src="//www.shieldui.com/shared/components/latest/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="//www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
-<script type="text/javascript" src="//www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
-<script type="text/javascript" src="/Content/Json/gridData.js"></script>
-<div id="grid"></div>
-<script type="text/javascript">
-    jQuery(function ($) {
-        $("#grid").shieldGrid({
-            dataSource: {
-                data: gridData
-            },
-            paging: {
-                pageSize: 20,
-                pageLinksCount: 10
-            },
-            columns: [
-                { field: "created_date", width: "70px", title: "created_date" },
-                { field: "city", title: "city" },
-                { field: "address", title: "address" },
-                { field: "type_of_activity", title: "type_of_activity", width: "270px" }
-            ],
-            toolbar: [
-                {
-                    buttons: [
-                        {
-                            commandName: "excel",
-                            caption: '<span class="sui-sprite sui-grid-icon-export-excel"></span> <span class="sui-grid-button-text">Export to Excel</span>'
-                        }
-                    ]
-                }
-            ],
-            exportOptions: {
-                proxy: "/filesaver/save",
-                excel: {
-                    fileName: "shieldui-export",
-                    author: "John Smith",
-                    dataSource: {
-                        data: gridData
-                    },
-                    readDataSource: true
-                }
-            }
-        });
-    });
-</script>    
+
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
@@ -184,8 +139,6 @@
 </div>
 
 
-
-  <button onclick="download();"  class="btn btn-success"><h4>Скачать</h4></button>
 
 
 
