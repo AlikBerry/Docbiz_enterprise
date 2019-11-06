@@ -10,37 +10,27 @@
     <script type="text/javascript" src="http://sheetjs.com/demos/Blob.js"></script>
     <script type="text/javascript" src="http://sheetjs.com/demos/FileSaver.js"></script>
     <script type="text/javascript" src="http://sheetjs.com/demos/Export2Excel.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="src/jquery.table2excel.js"></script>
     <script>
-         function exportTableToExcel(tableID, filename = ''){
-                        var downloadLink;
-                        var dataType = 'application/vnd.ms-excel';
-                        var tableSelect = document.getElementById(tableID);
-                        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+      $("button").click(function(){
 
-                        // Specify file name
-                        filename = filename?filename+'.xls':'excel_data.xls';
+          $("#table2excel").table2excel({
 
-                        // Create download link element
-                        downloadLink = document.createElement("a");
+            // exclude CSS class
 
-                        document.body.appendChild(downloadLink);
+             exclude:".noExl",
 
-                        if(navigator.msSaveOrOpenBlob){
-                            var blob = new Blob(['\ufeff', tableHTML], {
-                                type: dataType
-                            });
-                            navigator.msSaveOrOpenBlob( blob, filename);
-                        }else{
-                            // Create a link to the file
-                            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+             name:"Worksheet Name",
 
-                            // Setting the file name
-                            downloadLink.download = filename;
+             filename:"SomeFile",//do not include extension
 
-                            //triggering the function
-                            downloadLink.click();
-                        }
-                    }
+             fileext:".xls" // file extension
+
+           });
+
+        });
+
     </script>
 
 
@@ -251,7 +241,7 @@
 
 {% endif %}
 
-  <button onclick="exportTableToExcel('tblData', 'members')" class="btn btn-success" ><h4>Скачать</h4></button>
+  <button>Скачать</button>
 
   
 
