@@ -70,7 +70,8 @@ def table_trans(request):
         context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
         context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
         context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
-
+        return render(request, 'base.html', context)
+    
         ''' After code is filtering user queryset '''
         
 #         if  request.GET.get('start_date') and request.GET.get('end_date'):
@@ -99,7 +100,7 @@ def table_trans(request):
 
 #     else:
 #         context = login_page_data()
-          return render(request, 'base.html', context)
+     
 
 
 
