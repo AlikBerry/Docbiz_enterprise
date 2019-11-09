@@ -3,14 +3,6 @@
 {% load widget_tweaks %}
 {% block content %}
 
-    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.core.min.js" ></script>
-    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/ods.min.js"></script>
-    <script type="text/javascript" src="http://sheetjs.com/demos/Blob.js"></script>
-    <script type="text/javascript" src="http://sheetjs.com/demos/FileSaver.js"></script>
-    <script type="text/javascript" src="http://sheetjs.com/demos/Export2Excel.js"></script>
-    <script>
-        function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
-    </script>
 
     <style>
       input[type='text']::placeholder{
@@ -159,8 +151,6 @@
 </div>
 
 
-
-  <button onclick="download();"  class="btn btn-success"><h4>Скачать</h4></button>
 
 
 

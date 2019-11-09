@@ -70,33 +70,53 @@ def table_trans(request):
         context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
         context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
         context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
-
+        return render(request, 'table_transaction.html', context)
+    
         ''' After code is filtering user queryset '''
 
         if  request.GET.get('start_date') and request.GET.get('end_date'):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
-            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date))
+            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date)).order_by('created_date')
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
             context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
+<<<<<<< HEAD
             if not context['queryset']:
                 context = login_page_data()
                 return render(request, "table_transaction.html", context)
+=======
+            paginator = Paginator(context['queryset'], 300)
+            page = request.GET.get('page')
+            context['queryset'] = paginator.get_page(page)
+>>>>>>> f6919f85e5c7e6d077977d61d682d9c050736657
             return render(request, "table_transaction.html", context)
-
+        
         if request.GET.get('description'):
             description = request.GET.get('description')
             context['queryset_1'] = Transactions.objects.filter(description__icontains=description)
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('expense')).items())
             context['balance'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('balance')).items())
+<<<<<<< HEAD
             if not context['queryset_1']:
                 context = login_page_data()
                 return render(request, "table_transaction.html", context)
             return render(request, "table_transaction.html", context)
     return render(request, "table_transaction.html", context)
+=======
+            paginator = Paginator(context['queryset_1'], 300)
+            page = request.GET.get('page')
+            context['queryset_1'] = paginator.get_page(page)
+            return render(request, "table_transaction.html", context)
+        return render(request, 'table_transaction.html', context)
 
+    else:
+        context = login_page_data()
+     
+>>>>>>> f6919f85e5c7e6d077977d61d682d9c050736657
+
+    
 
 
 
@@ -128,6 +148,12 @@ def clients(request):
     if request.GET.get('city') or request.GET.get('address') or request.GET.get('type_of_activity'):
         city = request.GET.get('city')
         address = request.GET.get('address')
+<<<<<<< HEAD
+=======
+        context['queryset_1'] = Clients.objects.filter(Q(city=city) | Q(address=address))
+        return render(request, 'table_clients.html', context)
+    if request.GET.get('type_of_activity'):
+>>>>>>> f6919f85e5c7e6d077977d61d682d9c050736657
         type_of_activity = request.GET.get('type_of_activity')
         context['queryset_1'] = Clients.objects.filter(Q(city__icontains=city) &
          Q(address__icontains=address) & 
