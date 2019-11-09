@@ -105,7 +105,7 @@ def table_trans(request):
 def table_trans_filter(request):
     context = login_page_data()
     context['transactions'] = Transactions.objects.all().order_by('created_date')
-    if request.GET.get('start_date') or request.GET.get('end_date') or request.GET.get('description'):
+    if request.GET.get('start_date') or request.GET.get('end_date') or request.GET.get('description') is None:
         return render(request, 'table_transaction.hrml', context)
     if  request.GET.get('start_date') and request.GET.get('end_date'):
             start_date = request.GET.get('start_date')
