@@ -72,7 +72,7 @@ def table_trans(request):
         context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
 
         ''' After code is filtering user queryset '''
-        
+
         if  request.GET.get('start_date') and request.GET.get('end_date'):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
@@ -80,21 +80,22 @@ def table_trans(request):
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
             context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
+            if not context['queryset']:
+                context = login_page_data()
+                return render(request, "table_transaction.html", context)
             return render(request, "table_transaction.html", context)
 
         if request.GET.get('description'):
             description = request.GET.get('description')
-            context['queryset_1'] = Transactions.objects.filter(description=description)
+            context['queryset_1'] = Transactions.objects.filter(description__icontains=description)
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
             context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('expense')).items())
             context['balance'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('balance')).items())
+            if not context['queryset_1']:
+                context = login_page_data()
+                return render(request, "table_transaction.html", context)
             return render(request, "table_transaction.html", context)
-            
-        return render(request, 'table_transaction.html', context)
-
-    else:
-        context = login_page_data()
-        return render(request, 'base.html', context)
+    return render(request, "table_transaction.html", context)
 
 
 
@@ -105,11 +106,12 @@ def employee(request):
    context['employee'] = Employee.objects.all()
    return render(request, 'table_employee.html', context)
 
+
 @login_required(login_url="/login")
 def clients(request):
     context = login_page_data()
     context['clients'] = Clients.objects.all()
-    paginator = Paginator(context['clients'], 70)
+    paginator = Paginator(context['clients'], 50)
     page = request.GET.get('page')
     context['clients'] = paginator.get_page(page)
 
@@ -119,18 +121,26 @@ def clients(request):
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
         context['queryset'] = Clients.objects.filter(created_date__range=(start_date, end_date))
+        if not context['queryset']:
+            context = login_page_data()
+            return render(request, 'table_clients.html', context)
         return render(request, 'table_clients.html', context)
-    if request.GET.get('city') or request.GET.get('address'):
+    if request.GET.get('city') or request.GET.get('address') or request.GET.get('type_of_activity'):
         city = request.GET.get('city')
         address = request.GET.get('address')
-        context['queryset_1'] = Clients.objects.filter(city=city, address=address)
-        return render(request, 'table_clients.html', context)
-    if request.GET.get('type_of_activity'):
         type_of_activity = request.GET.get('type_of_activity')
-        context['queryset_2'] = Clients.objects.filter(type_of_activity=type_of_activity)
+        context['queryset_1'] = Clients.objects.filter(Q(city__icontains=city) &
+         Q(address__icontains=address) & 
+         Q(type_of_activity__icontains=type_of_activity))
+        if not context['queryset_1']:
+            context = login_page_data()
+            return render(request, 'table_clients.html', context)
         return render(request, 'table_clients.html', context)
 
     return render(request, 'table_clients.html', context)
+
+    
+    
 
 @login_required(login_url="/login")
 def cashboxes(request):
@@ -140,6 +150,24 @@ def cashboxes(request):
     page = request.GET.get('page')
     context['cashboxes'] = paginator.get_page(page)
 
+    ''' After code is filtering user queryset '''
+
+    if request.GET.get('created_date') or request.GET.get('model_name') or request.GET.get('number_of_cashbox') or request.GET.get('iep') or request.GET.get('client'):
+        created_date = request.GET.get('created_date')
+        model_name = request.GET.get('model_name')
+        number_of_cashbox = request.GET.get('number_of_cashbox')
+        iep = request.GET.get('iep')
+        client = request.GET.get('client')
+        context['queryset'] = Cashboxes.objects.filter(Q(created_date__contains=created_date) & 
+        Q(model_name__icontains=model_name) & 
+        Q(number_of_cashbox__icontains=number_of_cashbox) & 
+        Q(iep__iep_name__icontains=iep) & 
+        Q(client__address__icontains=client))
+        print(context['queryset'])
+        if not context['queryset']:
+            context = login_page_data()
+            return render(request, 'table_cashbox.html', context)
+        return render(request, 'table_cashbox.html', context)
     return render(request, 'table_cashbox.html', context)
 
 @login_required(login_url="/login")
@@ -208,6 +236,26 @@ def terminals(request):
     paginator = Paginator(context['terminals'], 50)
     page = request.GET.get('page')
     context['terminals'] = paginator.get_page(page)
+
+    ''' After code is filtering user queryset '''
+
+    if request.GET.get('created_date') or request.GET.get('number_of_terminal') or request.GET.get('iep') or request.GET.get('client'):
+        created_date = request.GET.get('created_date')
+        number_of_terminal = request.GET.get('number_of_terminal')
+        iep = request.GET.get('iep')
+        client = request.GET.get('client')
+        context['queryset'] = Terminal.objects.filter(Q(created_date__contains=created_date) & 
+        Q(number_of_terminal__icontains=number_of_terminal) & 
+        Q(iep__iep_name__icontains=iep) & 
+        Q(client__address__icontains=client))
+        print(context['queryset'])
+        if not context['queryset']:
+            context = login_page_data()
+            return render(request, 'table_terminal.html', context)
+        return render(request, 'table_terminal.html', context)
+    return render(request, 'table_terminal.html', context)
+
+
     return render(request, 'table_terminal.html', context)
 
 @login_required(login_url="/login")

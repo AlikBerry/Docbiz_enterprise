@@ -12,6 +12,15 @@
         function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
     </script>
 
+    <style>
+      input[type='text']::placeholder{
+        color: black;
+      }
+      input{
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+      }
+    </style>
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
@@ -19,7 +28,7 @@
 </div>
 
 <div style="margin-bottom:1em;">
-    <form class="form-inline" method="GET">
+    <form class="form-inline" method="GET" >
     
         <div class="form-group">
           <input name="start_date"  type="text" class="form-control" placeholder="Дата начальная" onfocus="(this.type='date')"/>
@@ -57,9 +66,11 @@
       <th>ОПЛАТА</th>
       <th>КАССА</th>
       <th>ТЕРМИНАЛ</th>
+      
     </tr>
   </thead>
   <tbody>
+
   {% if queryset %}
       {% for c in queryset %}
       <tr>
@@ -103,6 +114,7 @@
 
 
       {% endfor %}
+
 
   {% else %}
       {% for cl in clients %}

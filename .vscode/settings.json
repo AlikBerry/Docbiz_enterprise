@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": ".p3/bin/python3"
+    "python.pythonPath": ".p3/bin/python3",
+    "vscode_custom_css.imports": [""],
+    "vscode_custom_css.policy": true
 }

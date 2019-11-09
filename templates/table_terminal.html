@@ -11,12 +11,44 @@
     <script>
         function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
     </script>
-
+    <style>
+        input[type='text']::placeholder{
+          color: black;
+        }
+        input{
+          margin-left: 0.5em;
+          margin-right: 0.5em;
+        }
+      </style>
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
   <h3>ТЕРМИНАЛЫ</h3>
 </div>
+
+<div style="margin-bottom:1em;">
+    <form class="form-inline" method="GET">
+    
+        <div class="form-group">
+          <input name="created_date"  type="text" class="form-control" placeholder="Дата постановки" onfocus="(this.type='date')"/>
+        </div>
+        
+        <div class="form-group">
+          <input name="number_of_terminal"  type="text" class="form-control" placeholder="Номер терминала">
+        </div>
+  
+        <div class="form-group">
+          <input name="iep"  type="text" class="form-control" placeholder="ИП" />
+        </div>
+  
+        <div class="form-group">
+          <input name="client"  type="text" class="form-control" placeholder="Адрес" />
+        </div>
+  
+        <button type="submit" class="btn btn-primary">Фильтр</button>
+      </form>      
+  </div>
+
 <table id="myTable">
   <thead>
     <tr style="background-color: #007bff">
@@ -27,25 +59,38 @@
     </tr>
   </thead>
   <tbody>
-  {% for tm in terminals %}
-    <tr>
-      <td data-label="ДАТА ПОСТАНОВКИ">{{ tm.created_date|date:'d.m.Y' }}</td>
-      <td data-label="НОМЕР">{{ tm.number_of_terminal }}</td>
-      <td data-label="ИП">{{ tm.iep }}</td>
-      <td data-label="КЛИЕНТ">{{ tm.client }}</td>
-    </tr>
-  {% endfor %}
 
-  {% for td in terminal_detail %}
-        <tr>
-          <td data-label="ДАТА ПОСТАНОВКИ">{{ td.created_date|date:'d.m.Y' }}</td>
-          <td data-label="НОМЕР">{{ td.number_of_terminal }}</td>
-          <td data-label="ИП">{{ td.iep }}</td>
-          <td data-label="КЛИЕНТ">{{ td.client }}</td>
-        </tr>
+  {% if queryset %}  
+    {% for i in queryset %}
+      <tr>
+        <td data-label="ДАТА ПОСТАНОВКИ">{{ i.created_date|date:'d.m.Y' }}</td>
+        <td data-label="НОМЕР">{{ i.number_of_terminal }}</td>
+        <td data-label="ИП">{{ i.iep }}</td>
+        <td data-label="КЛИЕНТ">{{ i.client }}</td>
+      </tr>
     {% endfor %}
 
+  {% else %}
+    {% for tm in terminals %}
+      <tr>
+        <td data-label="ДАТА ПОСТАНОВКИ">{{ tm.created_date|date:'d.m.Y' }}</td>
+        <td data-label="НОМЕР">{{ tm.number_of_terminal }}</td>
+        <td data-label="ИП">{{ tm.iep }}</td>
+        <td data-label="КЛИЕНТ">{{ tm.client }}</td>
+      </tr>
+    {% endfor %}
+      
+  
+    {% for td in terminal_detail %}
+          <tr>
+            <td data-label="ДАТА ПОСТАНОВКИ">{{ td.created_date|date:'d.m.Y' }}</td>
+            <td data-label="НОМЕР">{{ td.number_of_terminal }}</td>
+            <td data-label="ИП">{{ td.iep }}</td>
+            <td data-label="КЛИЕНТ">{{ td.client }}</td>
+          </tr>
+      {% endfor %}
 
+  {% endif %}
   </tbody>
 </table>
 

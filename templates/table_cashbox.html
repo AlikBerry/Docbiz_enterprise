@@ -12,11 +12,49 @@
         function download() { export_table_to_excel('myTable', 'xlsx' || 'xlsx'); }
     </script>
 
+    <style>
+      input[type='text']::placeholder{
+        color: black;
+      }
+      input{
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+      }
+    </style>
+
 
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
   <h3>КАССЫ</h3>
 </div>
+
+<div style="margin-bottom:1em;">
+  <form class="form-inline" method="GET">
+  
+      <div class="form-group">
+        <input name="created_date"  type="text" class="form-control" placeholder="Дата постановки" onfocus="(this.type='date')"/>
+      </div>
+      
+      <div class="form-group" >
+        <input name="model_name"  type="text" class="form-control" placeholder="Модель" />
+      </div>
+
+      <div class="form-group">
+        <input name="number_of_cashbox"  type="text" class="form-control" placeholder="Номер кассы">
+      </div>
+
+      <div class="form-group">
+        <input name="iep"  type="text" class="form-control" placeholder="ИП" />
+      </div>
+
+      <div class="form-group">
+        <input name="client"  type="text" class="form-control" placeholder="Адрес" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Фильтр</button>
+    </form>      
+</div>
+
 
 <div>
   <table id="myTable">
@@ -26,27 +64,41 @@
         <th>МОДЕЛЬ</th>
         <th>НОМЕР</th>
         <th>ИП</th>
-        <th>КЛИЕНТ</th>
+        <th>АДРЕС</th>
       </tr>
     </thead>
     <tbody>
-    {% for cash in cashboxes %}
-      <tr>
-        <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date|date:'d.m.Y' }}</td>
-        <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
-        <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
-        <td data-label="ИП">{{ cash.iep }}</td>
-        <td data-label="КЛИЕНТ">{{ cash.client }}</td>
-      </tr>
-    {% endfor %}
-  
+    {% if queryset %}
+      {% for i in queryset %}
+        <tr>
+          <td data-label="ДАТА ПОСТАНОВКИ">{{ i.created_date|date:'d.m.Y' }}</td>
+          <td data-label="МОДЕЛЬ">{{ i.model_name }}</td>
+          <td data-label="НОМЕР">{{ i.number_of_cashbox }}</td>
+          <td data-label="ИП">{{ i.iep }}</td>
+          <td data-label="АДРЕС">{{ i.client }}</td>
+        </tr>
+      {% endfor %}
+
+    {% else %}
+      {% for cash in cashboxes %}
+        <tr>
+          <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date|date:'d.m.Y' }}</td>
+          <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
+          <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
+          <td data-label="ИП">{{ cash.iep }}</td>
+          <td data-label="АДРЕС">{{ cash.client }}</td>
+        </tr>
+      {% endfor %}
+    
+    {% endif %}
+
     {% for cs in cashbox_detail %}
           <tr>
             <td data-label="ДАТА ПОСТАНОВКИ">{{ cs.created_date|date:'d.m.Y' }}</td>
             <td data-label="МОДЕЛЬ">{{ cs.model_name }}</td>
             <td data-label="НОМЕР">{{ cs.number_of_cashbox }}</td>
             <td data-label="ИП">{{ cs.iep }}</td>
-            <td data-label="КЛИЕНТ">{{ cs.client }}</td>
+            <td data-label="АДРЕС">{{ cs.client }}</td>
           </tr>
       {% endfor %}
   
