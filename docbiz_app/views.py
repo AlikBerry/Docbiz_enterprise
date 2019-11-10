@@ -252,7 +252,10 @@ def terminals(request):
         context['queryset'] = Terminal.objects.filter(Q(created_date__contains=created_date) & 
         Q(number_of_terminal__icontains=number_of_terminal) & 
         Q(iep__iep_name__icontains=iep) & 
-        Q(client__address__icontains=client) | 
+        Q(client__address__icontains=client) |
+        Q(created_date__contains=created_date) & 
+        Q(number_of_terminal__icontains=number_of_terminal) & 
+        Q(iep__iep_name__icontains=iep) &                                               
         Q(client__address__isnull=True))
         if not context['queryset']:
             context = login_page_data()
