@@ -33,7 +33,7 @@ var tableToExcel = (function() {
   }
 </style>
 
-<button class="btn btn-success" onclick="tableToExcel('testTable', 'W3C Example Table')" ><h4>EXPORT TO EXCEL</h4></button>
+
 <link rel="stylesheet" href="{% static 'table/css/main.css' %}">
 <div class="alert alert-primary" role="alert" style="text-align: center">
   <h3>ТРАНЗАКЦИИ</h3>
@@ -232,10 +232,11 @@ var tableToExcel = (function() {
        </span>
    </div>
 
+ 
 {% endif %}
 
   
-
+ <button class="btn btn-success" onclick="tableToExcel('testTable', 'W3C Example Table')" ><h4>EXPORT TO EXCEL</h4></button>
   
 
 {% endblock %}
