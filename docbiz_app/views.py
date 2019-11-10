@@ -70,11 +70,10 @@ def table_trans(request):
         context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
         context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
         context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
-        return render(request, 'table_transaction.html', context)
     
         ''' After code is filtering user queryset '''
 
-        if  request.GET.get('start_date') and request.GET.get('end_date'):
+    if  request.GET.get('start_date') and request.GET.get('end_date'):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
             context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date)).order_by('created_date')
@@ -86,7 +85,7 @@ def table_trans(request):
                 return render(request, "table_transaction.html", context)  
             return render(request, "table_transaction.html", context)
         
-        if request.GET.get('description'):
+    if request.GET.get('description'):
             description = request.GET.get('description')
             context['queryset_1'] = Transactions.objects.filter(description__icontains=description)
             context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
