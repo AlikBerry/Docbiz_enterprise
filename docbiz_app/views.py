@@ -113,7 +113,7 @@ def employee(request):
 def clients(request):
     context = login_page_data()
     context['clients'] = Clients.objects.all()
-    paginator = Paginator(context['clients'], 50)
+    paginator = Paginator(context['clients'], 70)
     page = request.GET.get('page')
     context['clients'] = paginator.get_page(page)
 
@@ -151,7 +151,7 @@ def clients(request):
 def cashboxes(request):
     context = login_page_data()
     context['cashboxes'] = Cashboxes.objects.all()
-    paginator = Paginator(context['cashboxes'], 50)
+    paginator = Paginator(context['cashboxes'], 70)
     page = request.GET.get('page')
     context['cashboxes'] = paginator.get_page(page)
 
@@ -238,7 +238,7 @@ def delete_transaction(request, id):
 def terminals(request):
     context = login_page_data()
     context['terminals'] = Terminal.objects.all()
-    paginator = Paginator(context['terminals'], 50)
+    paginator = Paginator(context['terminals'], 70)
     page = request.GET.get('page')
     context['terminals'] = paginator.get_page(page)
 
