@@ -162,7 +162,7 @@ def cashboxes(request):
         number_of_cashbox = request.GET.get('number_of_cashbox')
         iep = request.GET.get('iep')
         client = request.GET.get('client')
-        context['queryset'] = Cashboxes.objects.filter(Q(created_date__contains=created_date) & 
+        context['queryset'] = Cashboxes.objects.filter(Q(created_date__icontains=created_date) & 
         Q(model_name__icontains=model_name) & 
         Q(number_of_cashbox__icontains=number_of_cashbox) & 
         Q(iep__iep_name__icontains=iep) & 
