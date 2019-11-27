@@ -88,7 +88,7 @@ class Clients(models.Model):
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     city = models.CharField(max_length=100, verbose_name='город', blank=True, null=True)
     address = models.CharField(max_length=255, verbose_name='адрес')
-    type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
+    type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, blank=True, null=True, verbose_name='вид деятельности')
     landlord = models.CharField(max_length=255, blank=True, null=True, verbose_name='арендодатель')
     contacts = models.CharField(max_length=155, blank=True, null=True, verbose_name='контакты')
     payment = models.IntegerField(default=0, verbose_name='оплата')
