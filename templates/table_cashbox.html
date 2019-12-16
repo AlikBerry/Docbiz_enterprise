@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 {% block content %}
 
-    <script type="text/javascript">
+<script type="text/javascript">
 var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
     , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
@@ -35,32 +35,79 @@ var tableToExcel = (function() {
   <h3>КАССЫ</h3>
 </div>
 
-<div style="margin-bottom:1em;">
-  <form class="form-inline" method="GET">
-  
-      <div class="form-group">
-        <input name="created_date"  type="text" class="form-control" placeholder="Дата постановки" onfocus="(this.type='date')"/>
+<main role="main" class="container">
+
+  <h3 style="text-align: center;">ФИЛЬТР</h3>
+  <form method="GET" action=".">
+    <div class="form-row">
+        <div class="form-group col-12">
+            <div class="input-group">
+                <input class="form-control py-2 border-right-0 border" type="search" name="model_name" placeholder="Модель кассы" />
+                <span class="input-group-append">
+                    <div class="input-group-text bg-transparent">
+                        <i class="fa fa-search"></i>
+                    </div>
+                </span>
+            </div>
+        </div>        
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-12">
+          <div class="input-group">
+              <input class="form-control py-2 border-right-0 border" type="search" name="number_of_cashbox" placeholder="Номер кассы" />
+              <span class="input-group-append">
+                  <div class="input-group-text bg-transparent">
+                      <i class="fa fa-search"></i>
+                  </div>
+              </span>
+          </div>
+      </div>        
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-12">
+        <div class="input-group">
+            <input class="form-control py-2 border-right-0 border" type="search" name="iep" placeholder="ИП" />
+            <span class="input-group-append">
+                <div class="input-group-text bg-transparent">
+                    <i class="fa fa-search"></i>
+                </div>
+            </span>
+        </div>
+    </div>        
+</div>
+
+<div class="form-row">
+  <div class="form-group col-12">
+      <div class="input-group">
+          <input class="form-control py-2 border-right-0 border" type="search" name="client" placeholder="Клиент" />
+          <span class="input-group-append">
+              <div class="input-group-text bg-transparent">
+                  <i class="fa fa-search"></i>
+              </div>
+          </span>
+      </div>
+  </div>        
+</div>
+    
+    <div class="form-row">
+      <div class="form-group col-md-2 col-lg-2">
+        <label>Дата начало</label>
+        <input type="date" class="form-control" name="min_created_date">
+      </div>
+      <div class="form-group col-md-2 col-lg-2">
+        <label>Дата конец</label>
+        <input type="date" class="form-control" name="max_created_date">
       </div>
       
-      <div class="form-group" >
-        <input name="model_name"  type="text" class="form-control" placeholder="Модель" />
-      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">ПОДТВЕРДИТЬ</button>
+  </form>
 
-      <div class="form-group">
-        <input name="number_of_cashbox"  type="text" class="form-control" placeholder="Номер кассы">
-      </div>
+</main>
 
-      <div class="form-group">
-        <input name="iep"  type="text" class="form-control" placeholder="ИП" />
-      </div>
-
-      <div class="form-group">
-        <input name="client"  type="text" class="form-control" placeholder="Адрес" />
-      </div>
-
-      <button type="submit" class="btn btn-primary">Фильтр</button>
-    </form>      
-</div>
 
 
 <div>
@@ -72,44 +119,40 @@ var tableToExcel = (function() {
         <th>НОМЕР</th>
         <th>ИП</th>
         <th>АДРЕС</th>
+        <th>ВИД ДЕЯТЕЛЬНОСТИ</th>
       </tr>
     </thead>
     <tbody>
-    {% if queryset %}
       {% for i in queryset %}
+      
         <tr>
           <td data-label="ДАТА ПОСТАНОВКИ">{{ i.created_date|date:'d.m.Y' }}</td>
           <td data-label="МОДЕЛЬ">{{ i.model_name }}</td>
           <td data-label="НОМЕР">{{ i.number_of_cashbox }}</td>
           <td data-label="ИП">{{ i.iep }}</td>
           <td data-label="АДРЕС">{{ i.client }}</td>
+          {% for iep in qs1 %}
+            {% if iep.id == i.iep.id  %}
+          <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ iep.type_of_activity }}</td>
+            {% endif %}
+          {% endfor %}
         </tr>
       {% endfor %}
 
-    {% else %}
-      {% for cash in cashboxes %}
-        <tr>
-          <td data-label="ДАТА ПОСТАНОВКИ">{{ cash.created_date|date:'d.m.Y' }}</td>
-          <td data-label="МОДЕЛЬ">{{ cash.model_name }}</td>
-          <td data-label="НОМЕР">{{ cash.number_of_cashbox }}</td>
-          <td data-label="ИП">{{ cash.iep }}</td>
-          <td data-label="АДРЕС">{{ cash.client }}</td>
-        </tr>
-      {% endfor %}
-    
-    {% endif %}
-
-    {% for cs in cashbox_detail %}
+      {% for cs in cashbox_detail %}
           <tr>
             <td data-label="ДАТА ПОСТАНОВКИ">{{ cs.created_date|date:'d.m.Y' }}</td>
             <td data-label="МОДЕЛЬ">{{ cs.model_name }}</td>
             <td data-label="НОМЕР">{{ cs.number_of_cashbox }}</td>
             <td data-label="ИП">{{ cs.iep }}</td>
             <td data-label="АДРЕС">{{ cs.client }}</td>
+            {% for iep in qs1 %}
+              {% if iep.id == cs.iep.id  %}
+            <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ iep.type_of_activity }}</td>
+              {% endif %}
+            {% endfor %}
           </tr>
       {% endfor %}
-  
-  
     </tbody>
   </table>
   
@@ -117,34 +160,27 @@ var tableToExcel = (function() {
   
 
 
-
-  
-
-
-
-
 <div class="pagination" style="display: flex;justify-content: center;">
     <span class="step-links">
-        {% if cashboxes.has_previous %}
+        {% if queryset.has_previous %}
             <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
-            <button><a href="?page={{ cashboxes.previous_page_number }}">ПРЕД.</a></button>
+            <button><a href="?page={{ queryset.previous_page_number }}">ПРЕД.</a></button>
         {% endif %}
 
                 <span class="current">
-            {{ cashboxes.number }} ИЗ {{ cashboxes.paginator.num_pages }}
+            {{ queryset.number }} ИЗ {{ queryset.paginator.num_pages }}
       </span>
 
 
 
-        {% if cashboxes.has_next %}
-           <button><a href="?page={{ cashboxes.next_page_number }}">СЛЕД.</a></button>
-          <button><a href="?page={{ cashboxes.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+        {% if queryset.has_next %}
+           <button><a href="?page={{ queryset.next_page_number }}">СЛЕД.</a></button>
+          <button><a href="?page={{ queryset.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
       {% endif %}
   </span>
 </div>
 
 
-  <button onclick="download();" class="btn btn-success"><h4>Сачать</h4></button>
 
 
 

@@ -35,39 +35,71 @@ var tableToExcel = (function() {
   <h3>КЛИЕНТЫ</h3>
 </div>
 
-<div style="margin-bottom:1em;">
-    <form class="form-inline" method="GET" >
+<main role="main" class="container">
+
+  <h3 style="text-align: center;">ФИЛЬТР</h3>
+  <form method="GET" action=".">
+    <div class="form-row">
+        <div class="form-group col-12">
+            <div class="input-group">
+                <input class="form-control py-2 border-right-0 border" type="search" name="city" placeholder="Город" />
+                <span class="input-group-append">
+                    <div class="input-group-text bg-transparent">
+                        <i class="fa fa-search"></i>
+                    </div>
+                </span>
+            </div>
+        </div>        
+    </div>
     
-        <div class="form-group">
-          <input name="start_date"  type="text" class="form-control" placeholder="Дата начальная" onfocus="(this.type='date')"/>
-        </div>
-        
-        <div class="form-group" >
-          <input name="end_date"  type="text" class="form-control" placeholder="Дата конечная" onfocus="(this.type='date')" />
-        </div>
+    <div class="form-row">
+      <div class="form-group col-12">
+          <div class="input-group">
+              <input class="form-control py-2 border-right-0 border" type="search" name="address" placeholder="Адрес" />
+              <span class="input-group-append">
+                  <div class="input-group-text bg-transparent">
+                      <i class="fa fa-search"></i>
+                  </div>
+              </span>
+          </div>
+      </div>        
+  </div>
 
-        <div class="form-group">
-          <input type="text" class="form-control" name="city" placeholder="Город">
+  <div class="form-row">
+    <div class="form-group col-12">
+        <div class="input-group">
+            <input class="form-control py-2 border-right-0 border" type="search" name="contacts" placeholder="Контакты" />
+            <span class="input-group-append">
+                <div class="input-group-text bg-transparent">
+                    <i class="fa fa-search"></i>
+                </div>
+            </span>
         </div>
-
-        <div class="form-group">
-          <input type="text" class="form-control" name="address" placeholder="Адрес">
-        </div>
-        
-        <div class="form-group">
-          <input type="text" class="form-control" name="type_of_activity" placeholder="Вид деятельности">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Фильтр</button>
-      </form>      
+    </div>        
 </div>
 
+<div class="form-row">
+  <div class="form-group col-12">
+      <div class="input-group">
+          <input class="form-control py-2 border-right-0 border" type="search" name="type_of_activity" placeholder="Вид деятельности" />
+          <span class="input-group-append">
+              <div class="input-group-text bg-transparent">
+                  <i class="fa fa-search"></i>
+              </div>
+          </span>
+      </div>
+  </div>        
+</div>
+    
+    <button type="submit" class="btn btn-primary">ПОДТВЕРДИТЬ</button>
+  </form>
+
+</main>
 
 
 <table id="testTable">
   <thead>
     <tr style="background-color: #007bff">
-      <th>ДАТА</th>
       <th>ГОРОД</th>
       <th>АДРЕС</th>
       <th>ВИД ДЕЯТЕЛЬНОСТИ</th>
@@ -79,10 +111,8 @@ var tableToExcel = (function() {
   </thead>
   <tbody>
 
-  {% if queryset %}
-      {% for c in queryset %}
+    {% for c in queryset %}
       <tr>
-        <td data-label="ДАТА">{{ c.created_date|date:'d.m.Y' }}</td>
         <td data-label="ГОРОД">{{ c.city }}</td>
         <td data-label="АДРЕС">{{ c.address }}</td>
         <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ c.type_of_activity }}</td>
@@ -90,57 +120,8 @@ var tableToExcel = (function() {
         <td data-label="КАССА"><a href="{% url 'cashboxes_detail' c.id %}">КАССА</a></td>
         <td data-label="ТЕРМИНАЛ"><a href="{% url 'terminals_detail' c.id %}">ТЕРМИНАЛ</a></td>
       </tr>
-      {% endfor %}
+    {% endfor %}
 
-  {% elif queryset_1 %}
-      {% for c in queryset_1 %}
-
-        <tr>
-        <td data-label="ДАТА">{{ c.created_date|date:'d.m.Y' }}</td>
-        <td data-label="ГОРОД">{{ c.city }}</td>
-        <td data-label="АДРЕС">{{ c.address }}</td>
-        <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ c.type_of_activity }}</td>
-        <td data-label="ОПЛАТА">{{ c.payment }}</td>
-        <td data-label="КАССА"><a href="{% url 'cashboxes_detail' c.id %}">КАССА</a></td>
-        <td data-label="ТЕРМИНАЛ"><a href="{% url 'terminals_detail' c.id %}">ТЕРМИНАЛ</a></td>
-        </tr>
-
-      {% endfor %}
-  
-  {% elif queryset_2 %}
-      {% for c in queryset_2 %}
-
-        <tr>
-        <td data-label="ДАТА">{{ c.created_date|date:'d.m.Y' }}</td>
-        <td data-label="ГОРОД">{{ c.city }}</td>
-        <td data-label="АДРЕС">{{ c.address }}</td>
-        <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ c.type_of_activity }}</td>
-        <td data-label="ОПЛАТА">{{ c.payment }}</td>
-        <td data-label="КАССА"><a href="{% url 'cashboxes_detail' c.id %}">КАССА</a></td>
-        <td data-label="ТЕРМИНАЛ"><a href="{% url 'terminals_detail' c.id %}">ТЕРМИНАЛ</a></td>
-      </tr>
-
-
-      {% endfor %}
-
-
-  {% else %}
-      {% for cl in clients %}
-
-        <tr>
-          <td data-label="ДАТА">{{ cl.created_date|date:'d.m.Y' }}</td>
-          <td data-label="ГОРОД">{{ cl.city }}</td>
-          <td data-label="АДРЕС">{{ cl.address }}</td>
-          <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>
-          <td data-label="ОПЛАТА">{{ cl.payment }}</td>
-          <td data-label="КАССА"><a href="{% url 'cashboxes_detail' cl.id %}">КАССА</a></td>
-          <td data-label="ТЕРМИНАЛ"><a href="{% url 'terminals_detail' cl.id %}">ТЕРМИНАЛ</a></td>
-        </tr>
-
-      {% endfor %}
-
-
-  {% endif %}
   
   </tbody>
 </table>
@@ -148,20 +129,20 @@ var tableToExcel = (function() {
 
 <div class="pagination" style="display: flex;justify-content: center;">
     <span class="step-links">
-        {% if clients.has_previous %}
+        {% if queryset.has_previous %}
             <button><a href="?page=1">&laquo; ПЕРВ.</a></button>
-            <button><a href="?page={{ clients.previous_page_number }}">ПРЕД.</a></button>
+            <button><a href="?page={{ queryset.previous_page_number }}">ПРЕД.</a></button>
         {% endif %}
 
                 <span class="current">
-             {{ clients.number }} ИЗ {{ clients.paginator.num_pages }}
+             {{ queryset.number }} ИЗ {{ queryset.paginator.num_pages }}
         </span>
 
 
 
-        {% if clients.has_next %}
-            <button><a href="?page={{ clients.next_page_number }}">СЛЕД.</a></button>
-            <button><a href="?page={{ clients.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
+        {% if queryset.has_next %}
+            <button><a href="?page={{ queryset.next_page_number }}">СЛЕД.</a></button>
+            <button><a href="?page={{ queryset.paginator.num_pages }}">ПОСЛ. &raquo;</a></button>
         {% endif %}
    </span>
 </div>

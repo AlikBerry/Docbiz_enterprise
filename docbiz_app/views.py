@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Sum, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -13,13 +13,16 @@ from docbiz_app.forms import LoginForm, TransactionForm
 
 
 from .models import Cashboxes, Clients, Employee, Menu, Terminal, Transactions
+from django.core import paginator
+from docbiz_app.models import IndividualEntrepreneur
 
 
 def login_page_data():
-    return {
+    context = {
         "login_form": LoginForm(),
         "menu_list": Menu.objects.all()
     }
+    return context
 
 
 def baseindexview(request):
@@ -59,119 +62,104 @@ def base(request):
     context = login_page_data()
     return render(request, "base.html", context)
 
-@login_required(login_url="/login")
-def table_trans(request):
-    if request.user.is_superuser:
-        context = login_page_data()
-        context['transactions'] = Transactions.objects.all().order_by('created_date')
-        paginator = Paginator(context['transactions'], 100)
-        page = request.GET.get('page')
-        context['transactions'] = paginator.get_page(page)
-        context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
-        context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
-        context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
-    
-        ''' After code is filtering user queryset '''
+def is_valid_queryparam(param):
+    return param != '' and param is not None
 
-    if  request.GET.get('start_date') and request.GET.get('end_date'):
-            start_date = request.GET.get('start_date')
-            end_date = request.GET.get('end_date')
-            context['queryset'] = Transactions.objects.filter(created_date__range=(start_date, end_date)).order_by('created_date')
-            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('incoming')).items())
-            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('expense')).items())
-            context['balance'] = ''.join(f'{v}' for k, v in context['queryset'].aggregate(Sum('balance')).items())
-            if not context['queryset']:
-                context = login_page_data()
-                return render(request, "table_transaction.html", context)  
-            return render(request, "table_transaction.html", context)
-        
-    if request.GET.get('description'):
-            description = request.GET.get('description')
-            context['queryset_1'] = Transactions.objects.filter(description__icontains=description)
-            context['sum_incoming'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('incoming')).items())
-            context['sum_expense'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('expense')).items())
-            context['balance'] = ''.join(f'{v}' for k, v in context['queryset_1'].aggregate(Sum('balance')).items())
-            if not context['queryset_1']:
-                context = login_page_data()
-                return render(request, "table_transaction.html", context)
-            return render(request, "table_transaction.html", context)
-    return render(request, "table_transaction.html", context)
+@login_required(login_url='/login')
+def TableTransactionView(request):
+    qs = Transactions.objects.all()
+    description = request.GET.get('description')
+    min_incoming = request.GET.get('min_incoming')
+    max_incoming = request.GET.get('max_incoming')
+    min_created_date = request.GET.get('min_created_date')
+    max_created_date = request.GET.get('max_created_date')
+    if is_valid_queryparam(description):
+        qs = qs.filter(description__icontains=description)
+    if is_valid_queryparam(min_incoming) and is_valid_queryparam(max_incoming):
+        qs = qs.filter(incoming__range=(min_incoming, max_incoming))
+    if is_valid_queryparam(min_created_date) and is_valid_queryparam(max_created_date):
+        qs = qs.filter(created_date__range=(min_created_date, max_created_date))
 
-    
-
-
-
-@login_required(login_url="/login")
-def employee(request):
-   context = login_page_data()
-   context['employee'] = Employee.objects.all()
-   return render(request, 'table_employee.html', context)
-
-
-@login_required(login_url="/login")
-def clients(request):
-    context = login_page_data()
-    context['clients'] = Clients.objects.all()
-    paginator = Paginator(context['clients'], 70)
+    paginator = Paginator(qs, 100)
     page = request.GET.get('page')
-    context['clients'] = paginator.get_page(page)
+    qs = paginator.get_page(page)
 
-    ''' After code is filtering user queryset '''
+    context = {
+        'queryset': qs,
+        'menu_list': Menu.objects.all()
+    }
 
-    if  request.GET.get('start_date') and request.GET.get('end_date'):
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-        context['queryset'] = Clients.objects.filter(created_date__range=(start_date, end_date))
-        if not context['queryset']:
-            context = login_page_data()
-            return render(request, 'table_clients.html', context)
-        return render(request, 'table_clients.html', context)
-    if request.GET.get('city') or request.GET.get('address') or request.GET.get('type_of_activity'):
-        city = request.GET.get('city')
-        address = request.GET.get('address')
-        type_of_activity = request.GET.get('type_of_activity')
-        context['queryset_1'] = Clients.objects.filter(Q(city=city) | Q(address=address))
-        return render(request, 'table_clients.html', context)
-    if request.GET.get('type_of_activity'):
-        type_of_activity = request.GET.get('type_of_activity')
-        context['queryset_1'] = Clients.objects.filter(Q(city__icontains=city) &
-         Q(address__icontains=address) & 
-         Q(type_of_activity__icontains=type_of_activity))
-        if not context['queryset_1']:
-            context = login_page_data()
-            return render(request, 'table_clients.html', context)
-        return render(request, 'table_clients.html', context)
+    context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
+    context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
+    context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
+
+    return render(request, 'table_transaction.html', context)
+
+    
+
+@login_required(login_url='/login')
+def ClientsView(request):
+    qs = Clients.objects.all()
+    city = request.GET.get('city')
+    address = request.GET.get('address')
+    type_of_activity = request.GET.get('type_of_activity')
+    contacts = request.GET.get('contacts')
+    payment = request.GET.get('payment')
+    if is_valid_queryparam(city):
+        qs = qs.filter(city__icontains=city)
+    if is_valid_queryparam(address):
+        qs = qs.filter(address__icontains=address)
+    if is_valid_queryparam(type_of_activity):
+        qs = qs.filter(type_of_activity__icontains=type_of_activity)
+    if is_valid_queryparam(contacts):
+        qs = qs.filter(contacts__icontains=contacts)
+    if is_valid_queryparam(payment):
+        qs = qs.filter(payment=payment)
+    
+    paginator = Paginator(qs, 100)
+    page = request.GET.get('page')
+    qs = paginator.get_page(page)
+
+    context = {
+        'queryset': qs,
+        'menu_list': Menu.objects.all()
+    }
+
     return render(request, 'table_clients.html', context)
 
-    
-    
 
-@login_required(login_url="/login")
-def cashboxes(request):
-    context = login_page_data()
-    context['cashboxes'] = Cashboxes.objects.all()
-    paginator = Paginator(context['cashboxes'], 70)
+@login_required(login_url='/login')
+def CashboxesView(request):
+    qs = Cashboxes.objects.all()
+    qs1 = IndividualEntrepreneur.objects.all()
+    min_created_date = request.GET.get('min_created_date')
+    max_created_date = request.GET.get('max_created_date')
+    model_name = request.GET.get('model_name')
+    number_of_cashbox = request.GET.get('number_of_cashbox')
+    iep = request.GET.get('iep')
+    client = request.GET.get('client')
+    type_of_activity = request.GET.get('type_of_activity')
+    if is_valid_queryparam(min_created_date) and is_valid_queryparam(max_created_date):
+        qs = qs.filter(created_date__range=(min_created_date, max_created_date))
+    if is_valid_queryparam(model_name):
+        qs = qs.filter(model_name__icontains=model_name)
+    if is_valid_queryparam(number_of_cashbox):
+        qs = qs.filter(number_of_cashbox__icontains=number_of_cashbox)
+    if is_valid_queryparam(iep):
+        qs = qs.filter(iep__iep_name__icontains=iep)
+    if is_valid_queryparam(client):
+        qs = qs.filter(Q(client__address__icontains=client) | Q(client__city=client))
+
+    paginator = Paginator(qs, 100)
     page = request.GET.get('page')
-    context['cashboxes'] = paginator.get_page(page)
+    qs = paginator.get_page(page)
 
-    ''' After code is filtering user queryset '''
+    context = {
+        'queryset': qs,
+        'qs1': qs1,
+        'menu_list': Menu.objects.all()
+    }
 
-    if request.GET.get('created_date') or request.GET.get('model_name') or request.GET.get('number_of_cashbox') or request.GET.get('iep') or request.GET.get('client'):
-        created_date = request.GET.get('created_date')
-        model_name = request.GET.get('model_name')
-        number_of_cashbox = request.GET.get('number_of_cashbox')
-        iep = request.GET.get('iep')
-        client = request.GET.get('client')
-        context['queryset'] = Cashboxes.objects.filter(Q(created_date__icontains=created_date) & 
-        Q(model_name__icontains=model_name) & 
-        Q(number_of_cashbox__icontains=number_of_cashbox) & 
-        Q(iep__iep_name__icontains=iep) & 
-        Q(client__address__icontains=client))
-        print(context['queryset'])
-        if not context['queryset']:
-            context = login_page_data()
-            return render(request, 'table_cashbox.html', context)
-        return render(request, 'table_cashbox.html', context)
     return render(request, 'table_cashbox.html', context)
 
 @login_required(login_url="/login")
@@ -180,6 +168,7 @@ def cashboxes_detail(request, id):
     if id is None:
         return render(request, 'table_clients.html', context)
     my_clients = Clients.objects.get(id=id)
+    qs1 = IndividualEntrepreneur.objects.all()
     cashboxes_list = []
     for i  in  my_clients.cashbox.all():
         cashboxes_list.append({
@@ -190,10 +179,31 @@ def cashboxes_detail(request, id):
             "client":i.client
         })
 
-    context = login_page_data()
-    context["cashbox_detail"] = cashboxes_list
+    context = {
+        'cashbox_detail': cashboxes_list,
+        'qs1': qs1,
+        'menu_list': Menu.objects.all()
+    }
     return  render(request, 'table_cashbox.html', context)
 
+@login_required(login_url="/login")
+def terminals_detail(request, id):
+    context = login_page_data()
+    if id is None:
+        return render(request, 'table_clients.html', context)
+    my_clients = Clients.objects.get(id=id)
+    terminals_list = []
+    for i  in  my_clients.terminal.all():
+        terminals_list.append({
+            "created_date": i.created_date,
+            "number_of_terminal": i.number_of_terminal,
+            "iep": i.iep,
+            "client": i.client
+        })
+
+    context = login_page_data()
+    context["terminal_detail"] = terminals_list
+    return  render(request, 'table_terminal.html', context)
 
 @login_required(login_url="/login")
 def add_transaction(request):
@@ -233,56 +243,9 @@ def delete_transaction(request, id):
     return redirect("table_trans")  
     
 
-@login_required(login_url="/login")
-def terminals(request):
-    context = login_page_data()
-    context['terminals'] = Terminal.objects.all()
-    paginator = Paginator(context['terminals'], 70)
-    page = request.GET.get('page')
-    context['terminals'] = paginator.get_page(page)
-
-    ''' After code is filtering user queryset '''
-
-    if request.GET.get('created_date') or request.GET.get('number_of_terminal') or request.GET.get('iep') or request.GET.get('client'):
-        created_date = request.GET.get('created_date')
-        number_of_terminal = request.GET.get('number_of_terminal')
-        iep = request.GET.get('iep')
-        client = request.GET.get('client')
-        context['queryset'] = Terminal.objects.filter(Q(created_date__contains=created_date) & 
-        Q(number_of_terminal__icontains=number_of_terminal) & 
-        Q(iep__iep_name__icontains=iep) & 
-        Q(client__address__icontains=client) |
-        Q(created_date__contains=created_date) & 
-        Q(number_of_terminal__icontains=number_of_terminal) & 
-        Q(iep__iep_name__icontains=iep) &                                               
-        Q(client__address__isnull=True))
-        if not context['queryset']:
-            context = login_page_data()
-            return render(request, 'table_terminal.html', context)
-        return render(request, 'table_terminal.html', context)
-    return render(request, 'table_terminal.html', context)
 
 
-    return render(request, 'table_terminal.html', context)
 
-@login_required(login_url="/login")
-def terminals_detail(request, id):
-    context = login_page_data()
-    if id is None:
-        return render(request, 'table_clients.html', context)
-    my_clients = Clients.objects.get(id=id)
-    terminals_list = []
-    for i  in  my_clients.terminal.all():
-        terminals_list.append({
-            "created_date": i.created_date,
-            "number_of_terminal": i.number_of_terminal,
-            "iep": i.iep,
-            "client": i.client
-        })
-
-    context = login_page_data()
-    context["terminal_detail"] = terminals_list
-    return  render(request, 'table_terminal.html', context)
 
 
 
