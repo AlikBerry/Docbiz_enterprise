@@ -22,9 +22,7 @@ var tableToExcel = (function() {
 })()
 </script> 
 
-<div>
-  <button class="btn btn-success" onclick="tableToExcel('testTable', 'W3C Example Table')"><h4>EXPORT TO EXCEL</h4></button>
-</div>
+
 
 
 
@@ -32,7 +30,7 @@ var tableToExcel = (function() {
 <div class="alert alert-primary" role="alert" style="text-align: center">
   <h3>ТРАНЗАКЦИИ</h3>
 </div>
-  
+
 
   <main role="main" class="container">
 
@@ -75,6 +73,16 @@ var tableToExcel = (function() {
     </form>
 
   </main>
+
+  <div>
+    <button onclick="window.location.href='{% url 'add_transaction' %}';"
+    type="button" class="btn btn-primary btn-lg" style="display: table;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    width: 250px;
+    height: 50px"> Добавить Транзакцию </button>
+  </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -141,5 +149,7 @@ var tableToExcel = (function() {
 </span>
 </div>
 
-
+<div>
+  <button class="btn btn-success" onclick="tableToExcel('testTable', 'W3C Example Table')"><h4>EXPORT TO EXCEL</h4></button>
+</div>
 {% endblock %}

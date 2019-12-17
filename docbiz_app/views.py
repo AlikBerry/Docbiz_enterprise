@@ -8,10 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from rest_framework import request
 from search_views.filters import BaseFilter
 from search_views.search import SearchListView
-
 from docbiz_app.forms import LoginForm, TransactionForm
-
-
 from .models import Cashboxes, Clients, Employee, Menu, Terminal, Transactions
 from django.core import paginator
 from docbiz_app.models import IndividualEntrepreneur
@@ -207,7 +204,6 @@ def terminals_detail(request, id):
 
 @login_required(login_url="/login")
 def add_transaction(request):
-
     context = login_page_data()
     if request.method == 'POST':
        form = TransactionForm(request.POST)
