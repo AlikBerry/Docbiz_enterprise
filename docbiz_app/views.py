@@ -77,7 +77,7 @@ def TableTransactionView(request):
     if is_valid_queryparam(min_created_date) and is_valid_queryparam(max_created_date):
         qs = qs.filter(created_date__range=(min_created_date, max_created_date))
 
-    paginator = Paginator(qs, 100)
+    paginator = Paginator(qs, 150)
     page = request.GET.get('page')
     qs = paginator.get_page(page)
 
