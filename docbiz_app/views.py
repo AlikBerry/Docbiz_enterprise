@@ -84,7 +84,7 @@ def TableTransactionView(request):
         context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
         context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
 
-    paginator = Paginator(qs, 100)
+    paginator = Paginator(qs, 150)
     page = request.GET.get('page')
     qs = paginator.get_page(page)
 
