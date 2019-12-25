@@ -21,13 +21,11 @@ def login_page_data():
     }
     return context
 
-
 def baseindexview(request):
     if request.user.is_authenticated:
         return redirect("base")
     context = login_page_data()
     return render(request, "login.html", context)
-
 
 def login_view(request):
     if request.method == "POST":
@@ -72,10 +70,19 @@ def TableTransactionView(request):
     max_created_date = request.GET.get('max_created_date')
     if is_valid_queryparam(description):
         qs = qs.filter(description__icontains=description)
+        context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
+        context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
+        context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
     if is_valid_queryparam(min_incoming) and is_valid_queryparam(max_incoming):
         qs = qs.filter(incoming__range=(min_incoming, max_incoming))
+        context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
+        context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
+        context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
     if is_valid_queryparam(min_created_date) and is_valid_queryparam(max_created_date):
         qs = qs.filter(created_date__range=(min_created_date, max_created_date))
+        context['sum_incoming'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('incoming')).items())
+        context['sum_expense'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('expense')).items())
+        context['balance'] = ''.join(f'{v}' for k, v in Transactions.objects.aggregate(Sum('balance')).items())
 
     paginator = Paginator(qs, 100)
     page = request.GET.get('page')
