@@ -33,7 +33,7 @@ class Transactions(models.Model):
         db_table = "transactions"
         verbose_name = 'Транзакции'
         verbose_name_plural = 'Транзакции'
-        ordering = ['-created_date']
+        ordering = ['created_date']
 
 
 class Employee(models.Model):
