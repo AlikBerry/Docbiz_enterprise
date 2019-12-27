@@ -110,10 +110,10 @@ var tableToExcel = (function() {
           <td data-label="НАЗНАЧЕНИЕ">{{ tr.description }}</td>
           <td data-label="БАЛАНС">{{ tr.balance }}</td>
           <td>
-              <button  type="button" class="btn btn-success update-btn" onclick="window.location.href='{% url 'update_transaction' t.id %}'">РЕДАКТИРОВАТЬ</button>
+              <button onclick="window.location.href='{% url 'update_transaction' tr.id %}';" type="button" class="btn btn-success update-btn" >РЕДАКТИРОВАТЬ</button>
             </td>
             <td>
-              <button  type="button" class="btn btn-danger" onclick="window.location.href='{% url 'delete_transaction' t.id %}'">УДАЛИТЬ</button>
+              <button onclick="window.location.href='{% url 'delete_transaction' tr.id %}'" type="button" class="btn btn-danger" >УДАЛИТЬ</button>
             </td>
         </tr>
           {% endfor %}
