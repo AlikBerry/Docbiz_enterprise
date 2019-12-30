@@ -150,6 +150,7 @@ class IndividualEntrepreneur(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата открытия')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     iep_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='ИП')
+    ident_number = models.IntegerField(max_length=12, blank=True, null=True, verbose_name='ИНН')
     type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')

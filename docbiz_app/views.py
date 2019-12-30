@@ -241,5 +241,3 @@ def delete_transaction(request, id):
 
 
 
-
-
