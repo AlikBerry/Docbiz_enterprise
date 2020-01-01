@@ -62,7 +62,7 @@ def is_valid_queryparam(param):
 
 @login_required(login_url='/login')
 def TableTransactionView(request):
-    if request.user.is_supeuser:
+    if request.user.is_superuser:
         qs = Transactions.objects.all()
         description = request.GET.get('description')
         min_incoming = request.GET.get('min_incoming')
