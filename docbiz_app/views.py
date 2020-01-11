@@ -161,6 +161,25 @@ def CashboxesView(request):
     return render(request, 'table_cashbox.html', context)
 
 @login_required(login_url="/login")
+def IndividualEntrepreneurTableView(request):
+    qs = IndividualEntrepreneur.objects.all()
+    iep_name = request.GET.get('iep_name')
+    if is_valid_queryparam(iep_name):
+        qs = qs.filter(iep_name__icontains=iep_name)
+    
+    paginor = Paginator(qs, 30)
+    page = request.GET.get('page')
+    qs = paginator.get_page(page)
+
+    context = {
+        'queryset': qs,
+        'menu_list': Menu.objects.all()
+    }
+
+    return render(request, 'table_iep.html', context)
+    
+
+@login_required(login_url="/login")
 def cashboxes_detail(request, id):
     context = login_page_data()
     if id is None:
