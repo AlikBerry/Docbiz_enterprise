@@ -1,34 +1,33 @@
 from django.contrib import admin
-from .models import Transactions, Menu, Employee, Clients, Cashboxes, IndividualEntrepreneur, \
-    IndividualEntrepreneurInfo, Terminal, EmployeeSalary
+from .models import *
 from daterange_filter.filter import DateRangeFilter
 
 
 @admin.register(Transactions)
 class TransactionsAdmin(admin.ModelAdmin):
-    list_display = ('created_date', 'incoming', 'expense', 'description')
+    list_display = [f.name for f in Transactions._meta.fields]
     list_filter = (('created_date', DateRangeFilter),)
 
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = [f.name for f in Menu._meta.fields]
 
 
 @admin.register(Clients)
 class ClientsAdmin(admin.ModelAdmin):
-    list_display = ('address', 'city', 'type_of_activity', 'status', 'id')
+    list_display = [f.name for f in Clients._meta.fields]
     search_fields = ["address", "city", "type_of_activity"]
 
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
-    list_display = ('number_of_cashbox', 'model_name', 'iep', 'client', 'id')
+    list_display = [f.name for f in Cashboxes._meta.fields]
     search_fields = ["number_of_cashbox", "client__address", "client__city", "iep__iep_name"]
     autocomplete_fields = ["client", "iep"]
 
 @admin.register(Terminal)
 class TerminalAdmin(admin.ModelAdmin):
-    list_display = ('number_of_terminal', 'iep', 'client', 'id')
+    list_display = [f.name for f in Terminal._meta.fields]
     search_fields = ["number_of_terminal", "client__city", "client__address", "iep__iep_name"]
     autocomplete_fields = ["client", "iep"]
 
@@ -40,7 +39,7 @@ class IepInfoTabularInline(admin.TabularInline):
 
 @admin.register(IndividualEntrepreneur)
 class IndividualEntrepreneurAdmin(admin.ModelAdmin):
-    list_display = ('iep_name', 'type_of_activity', 'el_key', 'status')
+    list_display = [f.name for f in IndividualEntrepreneur._meta.fields]
     inlines = [IepInfoTabularInline]
     search_fields = ["iep_name"]
 
@@ -50,23 +49,14 @@ class EmployeeSalaryTabularInline(admin.TabularInline):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('full_name',)
+    list_display = [f.name for f in Employee._meta.fields]
     inlines = [EmployeeSalaryTabularInline]
 
 
 
-
-# @admin.register(IndividualEntrepreneur)
-# class IepsAdmin(admin.ModelAdmin):
-#     list_display = ('iep_name', 'created_date', 'tel_number', 'el_key', 'status', 'id' )
-#     search_fields = ["iep_name"]
-#
-#
-#
-# @admin.register(IndividualEntrepreneurInfo)
-# class IepsInfoAdmin(admin.ModelAdmin):
-#     list_display = ('iep', 'bank', 'login', 'password', 'codeword', 'password_of_card')
-#     autocomplete_fields = ["iep"]
+@admin.register(IndividualEntrepreneurSalary)
+class IndividualEntrepreneurSalaryAdmin(admin.ModelAdmin):
+    list_display = [f.name for f in IndividualEntrepreneurSalary._meta.fields]
 
 
 

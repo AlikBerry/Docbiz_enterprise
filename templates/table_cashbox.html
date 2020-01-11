@@ -88,6 +88,19 @@ var tableToExcel = (function() {
       </div>
   </div>        
 </div>
+
+<div class="form-row">
+  <div class="form-group col-12">
+      <div class="input-group">
+          <input class="form-control py-2 border-right-0 border" type="search" name="type_of_activity" placeholder="Вид деятельности" />
+          <span class="input-group-append">
+              <div class="input-group-text bg-transparent">
+                  <i class="fa fa-search"></i>
+              </div>
+          </span>
+      </div>
+  </div>        
+</div>
     
     <div class="form-row">
       <div class="form-group col-md-2 col-lg-2">
@@ -129,9 +142,9 @@ var tableToExcel = (function() {
           <td data-label="НОМЕР">{{ i.number_of_cashbox }}</td>
           <td data-label="ИП">{{ i.iep }}</td>
           <td data-label="АДРЕС">{{ i.client }}</td>
-          {% for iep in qs1 %}
-            {% if iep.id == i.iep.id  %}
-          <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ iep.type_of_activity }}</td>
+          {% for cl in queryset_1 %}
+            {% if cl.id == i.client.id  %}
+          <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>
             {% endif %}
           {% endfor %}
         </tr>
@@ -144,9 +157,9 @@ var tableToExcel = (function() {
             <td data-label="НОМЕР">{{ cs.number_of_cashbox }}</td>
             <td data-label="ИП">{{ cs.iep }}</td>
             <td data-label="АДРЕС">{{ cs.client }}</td>
-            {% for iep in qs1 %}
-              {% if iep.id == cs.iep.id  %}
-            <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ iep.type_of_activity }}</td>
+            {% for cl in queryset_1 %}
+              {% if cl.id == i.client.id  %}
+            <td data-label="ВИД ДЕЯТЕЛЬНОСТИ">{{ cl.type_of_activity }}</td>
               {% endif %}
             {% endfor %}
           </tr>

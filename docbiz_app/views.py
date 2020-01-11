@@ -127,7 +127,7 @@ def ClientsView(request):
 @login_required(login_url='/login')
 def CashboxesView(request):
     qs = Cashboxes.objects.all()
-    qs1 = IndividualEntrepreneur.objects.all()
+    qs1 = Clients.objects.all()
     min_created_date = request.GET.get('min_created_date')
     max_created_date = request.GET.get('max_created_date')
     model_name = request.GET.get('model_name')
@@ -145,14 +145,16 @@ def CashboxesView(request):
         qs = qs.filter(iep__iep_name__icontains=iep)
     if is_valid_queryparam(client):
         qs = qs.filter(Q(client__address__icontains=client) | Q(client__city=client))
+    if is_valid_queryparam(type_of_activity):
+        qs = qs.filter(client__type_of_activity__icontains=type_of_activity)
 
-    paginator = Paginator(qs, 100)
+    paginator = Paginator(qs, 150)
     page = request.GET.get('page')
     qs = paginator.get_page(page)
 
     context = {
         'queryset': qs,
-        'qs1': qs1,
+        'queryset_1': qs1,
         'menu_list': Menu.objects.all()
     }
 

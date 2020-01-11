@@ -202,7 +202,16 @@ class IndividualEntrepreneurInfo(models.Model):
         verbose_name_plural = "ИП инфо."
 
 
+class IndividualEntrepreneurSalary(models.Model):
+    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
+    iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
+    description = models.CharField(max_length=255, blank=True, null=True, verbose_name='коментарий')
+    amount = models.IntegerField(default=0, verbose_name='ЗП')
 
 
+    class Meta:
+        db_table = "iep_salary"
+        verbose_name = "ИП ЗП"
+        verbose_name_plural = "ИП ЗП"
 
 
