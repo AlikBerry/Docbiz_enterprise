@@ -167,7 +167,7 @@ def IndividualEntrepreneurTableView(request):
     if is_valid_queryparam(iep_name):
         qs = qs.filter(iep_name__icontains=iep_name)
     
-    paginor = Paginator(qs, 30)
+    paginator = Paginator(qs, 100)
     page = request.GET.get('page')
     qs = paginator.get_page(page)
 
