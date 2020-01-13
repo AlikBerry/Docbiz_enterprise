@@ -59,5 +59,6 @@ class IndividualEntrepreneurSalaryAdmin(admin.ModelAdmin):
     list_display = [f.name for f in IndividualEntrepreneurSalary._meta.fields]
 
 
-
-
+@admin.register(IndividualEntrepreneurDebt)
+class IndividualEntrepreneurDebtAdmin(admin.ModelAdmin):
+    list_display = [f.name for f in IndividualEntrepreneurDebt._meta.fields]

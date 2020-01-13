@@ -215,3 +215,13 @@ class IndividualEntrepreneurSalary(models.Model):
         verbose_name_plural = "ИП ЗП"
 
 
+class IndividualEntrepreneurDebt(models.Model):
+    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
+    update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
+    iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
+    debt = models.IntegerField(default=0, verbose_name='долг')
+
+    class Meta:
+        db_table = "iep_debt"
+        verbose_name = "ИП долги"
+        verbose_name_plural = "ИП долги"
