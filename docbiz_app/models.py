@@ -208,6 +208,7 @@ class IndividualEntrepreneurSalary(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True, verbose_name='коментарий')
     amount = models.IntegerField(default=0, verbose_name='ЗП')
 
+    auto_create_schema= True
 
     class Meta:
         db_table = "iep_salary"
@@ -220,6 +221,8 @@ class IndividualEntrepreneurDebt(models.Model):
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
     debt = models.IntegerField(default=0, verbose_name='долг')
+
+    auto_create_schema = True
 
     class Meta:
         db_table = "iep_debt"
