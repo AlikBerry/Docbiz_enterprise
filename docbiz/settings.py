@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'docbiz.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'docbiz_db_new',
+         'NAME': 'docbiz_db',
          'USER': 'postgres',
          'PASSWORD': 'sudo180',
          'HOST': 'localhost',
