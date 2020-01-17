@@ -53,7 +53,7 @@ class EmployeeSalary(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, verbose_name='сотрудник')
     amount = models.IntegerField(default=0, blank=True, null=True, verbose_name='оплата')
-    description = model.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
+    description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
    
 
     class Meta:
