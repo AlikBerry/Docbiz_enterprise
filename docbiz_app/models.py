@@ -50,16 +50,11 @@ class Employee(models.Model):
 
 
 class EmployeeSalary(models.Model):
+    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, verbose_name='сотрудник')
-    created_date_1 = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
-    salary_payment_1 = models.IntegerField(default=0, blank=True, null=True, verbose_name='1/2 часть')
-    created_date_2 = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
-    salary_payment_2 = models.IntegerField(default=0, blank=True, null=True, verbose_name='2/2 часть')
-    salary_balance = models.IntegerField(default=0, blank=True, null=True, verbose_name='баланс')
-
-    def save(self, *args, **kwargs):
-        self.salary_balance = self.employee.salary - (self.salary_payment_1 + self.salary_payment_2)
-        super(EmployeeSalary, self).save(*args, **kwargs)
+    amount = models.IntegerField(default=0, blank=True, null=True, verbose_name='оплата')
+    description = model.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
+   
 
     class Meta:
         db_table = "employee_salary"
