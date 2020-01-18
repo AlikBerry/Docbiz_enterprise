@@ -98,6 +98,18 @@ class Clients(models.Model):
         db_table = "clients"
         verbose_name = 'Клиенты'
         verbose_name_plural = 'Клиенты'
+    
+
+class ClientsPayment(models.Model):
+    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
+    client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, verbose_name='клиент')
+    description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
+    amount = models.IntegerField(default=0, verbose_name='сумма')
+
+    class Meta:
+        db_table = "clients_payment"
+        verbose_name = 'Оплата Клиента'
+        verbose_name_plural = 'Оплата Клиента'
 
 
 
@@ -163,8 +175,6 @@ class IndividualEntrepreneur(models.Model):
 
 
 
-
-
 class IndividualEntrepreneurInfo(models.Model):
     BANKS = (
         ('Альфа-банк', 'Альфа-банк'),
@@ -201,9 +211,8 @@ class IndividualEntrepreneurSalary(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
     iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
     description = models.CharField(max_length=255, blank=True, null=True, verbose_name='коментарий')
-    amount = models.IntegerField(default=0, verbose_name='ЗП')
+    amount = models.IntegerField(default=0, verbose_name='сумма')
 
-    auto_create_schema= True
 
     class Meta:
         db_table = "iep_salary"
@@ -217,9 +226,10 @@ class IndividualEntrepreneurDebt(models.Model):
     iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
     debt = models.IntegerField(default=0, verbose_name='долг')
 
-    auto_create_schema = True
+
 
     class Meta:
         db_table = "iep_debt"
         verbose_name = "ИП долги"
         verbose_name_plural = "ИП долги"
+

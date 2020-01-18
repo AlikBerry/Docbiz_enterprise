@@ -19,6 +19,11 @@ class ClientsAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Clients._meta.fields]
     search_fields = ["address", "city", "type_of_activity"]
 
+
+@admin.register(ClientsPayment)
+class ClientsPaymentAdmin(admin.ModelAdmin):
+    list_display =  [f.name for f in ClientsPayment._meta.fields]
+
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = [f.name for f in Cashboxes._meta.fields]
