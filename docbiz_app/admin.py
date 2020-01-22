@@ -23,6 +23,7 @@ class ClientsAdmin(admin.ModelAdmin):
 @admin.register(ClientsPayment)
 class ClientsPaymentAdmin(admin.ModelAdmin):
     list_display =  [f.name for f in ClientsPayment._meta.fields]
+    autocomplete_fields = ["client"]
 
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
@@ -62,8 +63,10 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(IndividualEntrepreneurSalary)
 class IndividualEntrepreneurSalaryAdmin(admin.ModelAdmin):
     list_display = [f.name for f in IndividualEntrepreneurSalary._meta.fields]
+    autocomplete_fields = ["iep"]
 
 
 @admin.register(IndividualEntrepreneurDebt)
 class IndividualEntrepreneurDebtAdmin(admin.ModelAdmin):
     list_display = [f.name for f in IndividualEntrepreneurDebt._meta.fields]
+    autocomplete_fields = ["iep"]
