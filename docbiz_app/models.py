@@ -17,6 +17,8 @@ class Menu(models.Model):
         verbose_name_plural = 'Меню'
         ordering = ['order']
 
+
+
 class Transactions(models.Model): 
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата публикации')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
@@ -36,17 +38,18 @@ class Transactions(models.Model):
         ordering = ['created_date']
 
 
+
 class Employee(models.Model):
     full_name = models.CharField(max_length=255, verbose_name='Ф.И.О')
     tel_num = models.CharField(max_length=155, verbose_name='номер тел.')
     address = models.CharField(max_length=255, verbose_name='адрес')
     salary = models.IntegerField(default=0, verbose_name='ЗП')
 
-
     class Meta:
         db_table = "employee"
         verbose_name = 'Сотрудники'
         verbose_name_plural = 'Сотрудники'
+
 
 
 class EmployeeSalary(models.Model):
@@ -55,7 +58,6 @@ class EmployeeSalary(models.Model):
     amount = models.IntegerField(default=0, blank=True, null=True, verbose_name='оплата')
     description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
    
-
     class Meta:
         db_table = "employee_salary"
         verbose_name = 'ЗП сотрудника'
@@ -92,17 +94,20 @@ class Clients(models.Model):
     status = models.BooleanField(default=True, verbose_name='статус')
 
     def __str__(self):
-        return "{}, {}".format(self.city, self.address)
+        return "{} | {} | {} | {}".format(self.city, self.address, self.type_of_activity, self.contacts)
 
     class Meta:
         db_table = "clients"
         verbose_name = 'Клиенты'
         verbose_name_plural = 'Клиенты'
+        ordering = ['created_date']
     
+
+
 
 class ClientsPayment(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
-    client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, verbose_name='клиент')
+    client = models.ForeignKey('Cashboxes', on_delete=models.DO_NOTHING, verbose_name='клиент')
     description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
     amount = models.IntegerField(default=0, verbose_name='сумма')
 
@@ -113,27 +118,29 @@ class ClientsPayment(models.Model):
 
 
 
+
 class Cashboxes(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата постановки')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     model_name = models.CharField(max_length=155, blank=True, null=True, verbose_name='название модели')
-    number_of_cashbox = models.CharField(max_length=100, verbose_name='номер кассы')
+    number_of_cashbox = models.CharField(max_length=100, unique=True, verbose_name='номер кассы')
     iep = models.ForeignKey('IndividualEntrepreneur', blank=True, null=True, on_delete=models.DO_NOTHING, verbose_name='ИП')
     client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='cashbox', verbose_name='клиент')
 
-
     def __str__(self):
-        return "{}     {}".format( self.model_name, self.number_of_cashbox)
+        return "{} | № {} | {}".format( self.model_name, self.number_of_cashbox, self.client)
 
     class Meta:
         db_table = "cashboxes"
         verbose_name = 'Кассы'
         verbose_name_plural = 'Кассы'
 
+
+
 class Terminal(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата постановки')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    number_of_terminal = models.CharField(max_length=100, verbose_name='номер терминала')
+    number_of_terminal = models.CharField(max_length=100, unique=True, verbose_name='номер терминала')
     iep = models.ForeignKey('IndividualEntrepreneur', blank=True, null=True, on_delete=models.DO_NOTHING, verbose_name='ИП')
     client = models.ForeignKey('Clients', on_delete=models.DO_NOTHING, blank=True, null=True, related_name='terminal', verbose_name='клиент')
 
@@ -141,6 +148,8 @@ class Terminal(models.Model):
         db_table = "terminals"
         verbose_name = "Терминалы"
         verbose_name_plural = "Терминалы"
+        ordering = ['created_date']
+
 
 
 class IndividualEntrepreneur(models.Model):
@@ -159,7 +168,7 @@ class IndividualEntrepreneur(models.Model):
     iep_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='ИП')
     ident_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='ИНН')
     type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
-    tel_number = models.CharField(max_length=12, blank=True, null=True, default='+7', verbose_name='номер тел.')
+    tel_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='номер тел.')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
 
@@ -168,9 +177,10 @@ class IndividualEntrepreneur(models.Model):
         db_table = "individual_entrepreneur"
         verbose_name = 'ИП'
         verbose_name_plural = 'ИП'
+        ordering = ['created_date']
 
     def __str__(self):
-        return "{}".format(self.iep_name)
+        return "{} | {}".format(self.iep_name, self.type_of_activity)
 
 
 
@@ -200,11 +210,11 @@ class IndividualEntrepreneurInfo(models.Model):
     password_of_card = models.CharField(max_length=50, null=True, blank=True, verbose_name='пароль карты')
     codeword = models.CharField(max_length=100, blank=True, null=True, verbose_name='кодовое слово')
 
-
     class Meta:
         db_table = "iep_info"
         verbose_name = "ИП инфо."
         verbose_name_plural = "ИП инфо."
+
 
 
 class IndividualEntrepreneurSalary(models.Model):
@@ -213,11 +223,12 @@ class IndividualEntrepreneurSalary(models.Model):
     description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
     amount = models.IntegerField(default=0, verbose_name='сумма')
 
-
     class Meta:
         db_table = "iep_salary"
         verbose_name = "ИП ЗП"
         verbose_name_plural = "ИП ЗП"
+
+
 
 
 class IndividualEntrepreneurDebt(models.Model):
@@ -226,8 +237,6 @@ class IndividualEntrepreneurDebt(models.Model):
     iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
     description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
     debt = models.IntegerField(default=0, verbose_name='долг')
-
-
 
     class Meta:
         db_table = "iep_debt"
