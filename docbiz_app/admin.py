@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 from daterange_filter.filter import DateRangeFilter
-from django.db.models import Sum
+from django.db.models import Sum, Avg
 from django.db.models.functions import Coalesce
 from admin_totals.admin import ModelAdminTotals
 
@@ -16,7 +16,7 @@ from admin_totals.admin import ModelAdminTotals
 @admin.register(Transactions)
 class TransactionsAdmin(ModelAdminTotals):
     list_display = ["created_date", "incoming", "expense", "balance", "description"]
-    list_totals = [('incoming', Sum), ('expense', Sum), ('balance', lambda field: Coalesce(Sum('balance'), 0)),]
+    list_totals = [('incoming', lambda field:Coalesce(Sum(field), 0)), ('expense', lambda field:Coalesce(Sum(field), 0)), ('balance', lambda field:Coalesce(Sum(field), 0)),]
     list_filter = (('created_date', DateRangeFilter),)
     search_fields = ["description"]
 
