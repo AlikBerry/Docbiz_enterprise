@@ -1,12 +1,24 @@
 from django.contrib import admin
 from .models import *
 from daterange_filter.filter import DateRangeFilter
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+from admin_totals.admin import ModelAdminTotals
+
+
+# @admin.register(Transactions)
+# class TransactionsAdmin(admin.ModelAdmin):
+#     list_display = ["created_date", "incoming", "expense", "balance","description"]
+#     list_filter = (('created_date', DateRangeFilter),)
+#     list_totals = [('balance', Sum),]
 
 
 @admin.register(Transactions)
-class TransactionsAdmin(admin.ModelAdmin):
-    list_display = ["created_date", "incoming", "expense", "description"]
+class TransactionsAdmin(ModelAdminTotals):
+    list_display = ["created_date", "incoming", "expense", "balance", "description"]
+    list_totals = [('incoming', Sum), ('expense', Sum), ('balance', Sum),]
     list_filter = (('created_date', DateRangeFilter),)
+    search_fields = ["description"]
 
 
 @admin.register(Menu)
@@ -18,6 +30,7 @@ class MenuAdmin(admin.ModelAdmin):
 class ClientsAdmin(admin.ModelAdmin):
     list_display = ["address", "city", "type_of_activity", "landlord", "contacts", "payment"]
     search_fields = ["address", "city", "type_of_activity", "landlord"]
+    
 
 
 @admin.register(ClientsPayment)

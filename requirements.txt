@@ -1,10 +1,14 @@
+admin-totals==1.0.1
 astroid==2.3.2
 Django==2.2.8
 django-admin-search==0.2.2
+django-advanced-filters==1.1.1
 django-bootstrap-form==3.4
+django-braces==1.14.0
 django-daterange-filter==1.3.0
 django-filter==2.2.0
 django-filters==0.2.1
+django-jet==1.0.8
 django-material-admin==1.6.37
 django-search-views==0.3.7
 django-widget-tweaks==1.4.3
@@ -16,6 +20,7 @@ mccabe==0.6.1
 pkg-resources==0.0.0
 pylint==2.4.3
 pytz==2019.1
+simplejson==3.17.0
 six==1.12.0
 sqlparse==0.3.0
 typed-ast==1.4.0
