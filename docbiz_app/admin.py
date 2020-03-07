@@ -16,7 +16,7 @@ from admin_totals.admin import ModelAdminTotals
 @admin.register(Transactions)
 class TransactionsAdmin(ModelAdminTotals):
     list_display = ["created_date", "incoming", "expense", "balance", "description"]
-    list_totals = [('incoming', Sum), ('expense', Sum), ('balance', Sum),]
+    list_totals = [('incoming', Sum), ('expense', Sum), ('balance', lambda field: Coalesce(Sum('balance'), 0)),]
     list_filter = (('created_date', DateRangeFilter),)
     search_fields = ["description"]
 
