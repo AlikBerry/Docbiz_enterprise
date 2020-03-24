@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django_filters',
     'bootstrapform',
     'widget_tweaks',
-    'admin_totals',
     'docbiz_app'
 ]
 

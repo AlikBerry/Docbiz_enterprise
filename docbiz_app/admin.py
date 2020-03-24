@@ -6,17 +6,10 @@ from django.db.models.functions import Coalesce
 from admin_totals.admin import ModelAdminTotals
 
 
-# @admin.register(Transactions)
-# class TransactionsAdmin(admin.ModelAdmin):
-#     list_display = ["created_date", "incoming", "expense", "balance","description"]
-#     list_filter = (('created_date', DateRangeFilter),)
-#     list_totals = [('balance', Sum),]
-
 
 @admin.register(Transactions)
 class TransactionsAdmin(ModelAdminTotals):
     list_display = ["created_date", "incoming", "expense", "balance", "description"]
-    list_totals = [('incoming', lambda field:Coalesce(Sum(field), 0)), ('expense', lambda field:Coalesce(Sum(field), 0)), ('balance', lambda field:Coalesce(Sum(field), 0)),]
     list_filter = (('created_date', DateRangeFilter),)
     search_fields = ["description"]
 
@@ -66,9 +59,6 @@ class IndividualEntrepreneurAdmin(admin.ModelAdmin):
     list_display = [f.name for f in IndividualEntrepreneur._meta.fields]
     inlines = [IepInfoTabularInline]
     search_fields = ["iep_name"]
-
-
-
 
 
 

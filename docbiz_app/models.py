@@ -88,7 +88,7 @@ class Clients(models.Model):
     city = models.CharField(max_length=100, verbose_name='город', blank=True, null=True)
     address = models.CharField(max_length=255, verbose_name='адрес')
     type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, blank=True, null=True, verbose_name='вид деятельности')
-    landlord = models.CharField(max_length=255, blank=True, null=True, verbose_name='арендодатель')
+    landlord = models.CharField(max_length=255, blank=True, null=True, verbose_name='описание')
     contacts = models.CharField(max_length=155, blank=True, null=True, verbose_name='контакты')
     payment = models.IntegerField(default=0, verbose_name='оплата')
     status = models.BooleanField(default=True, verbose_name='статус')
@@ -171,6 +171,7 @@ class IndividualEntrepreneur(models.Model):
     tel_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='номер тел.')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
+    sign = models.BooleanField(default=True, verbose_name='честный знак')
 
 
     class Meta:
