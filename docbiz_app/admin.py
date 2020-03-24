@@ -56,7 +56,7 @@ class IepInfoTabularInline(admin.TabularInline):
 
 @admin.register(IndividualEntrepreneur)
 class IndividualEntrepreneurAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in IndividualEntrepreneur._meta.fields]
+    list_display = ["iep_name", "ident_number", "type_of_activity", "el_key", "status", "sign", "created_date"]
     inlines = [IepInfoTabularInline]
     search_fields = ["iep_name"]
 
