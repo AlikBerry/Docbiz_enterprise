@@ -3,12 +3,12 @@ from .models import *
 from daterange_filter.filter import DateRangeFilter
 from django.db.models import Sum, Avg
 from django.db.models.functions import Coalesce
-from admin_totals.admin import ModelAdminTotals
+
 
 
 
 @admin.register(Transactions)
-class TransactionsAdmin(ModelAdminTotals):
+class TransactionsAdmin(admin.ModelAdmin):
     list_display = ["created_date", "incoming", "expense", "balance", "description"]
     list_filter = (('created_date', DateRangeFilter),)
     search_fields = ["description"]
