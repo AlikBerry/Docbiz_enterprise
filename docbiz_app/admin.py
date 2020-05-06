@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import *
 from daterange_filter.filter import DateRangeFilter
-from django.db.models import Sum, Avg
-from django.db.models.functions import Coalesce
+
+
 
 
 
@@ -26,15 +26,6 @@ class ClientsAdmin(admin.ModelAdmin):
     
 
 
-@admin.register(ClientsPayment)
-class ClientsPaymentAdmin(admin.ModelAdmin):
-    list_display =  ["client", "description", "amount"]
-    autocomplete_fields = ["client"]
-    search_fields= ["client__address", "client__city"]
-    list_filter = (('created_date', DateRangeFilter),)
-
-
-
 @admin.register(Cashboxes)
 class CashboxesAdmin(admin.ModelAdmin):
     list_display = ["number_of_cashbox", "model_name", "iep", "client"]
@@ -49,15 +40,18 @@ class TerminalAdmin(admin.ModelAdmin):
 
 
 
-
 class IepInfoTabularInline(admin.TabularInline):
     model = IndividualEntrepreneurInfo
+    extra = 0
+
+class IepSalaryTabularInline(admin.TabularInline):
+    model = IndividualEntrepreneurSalary
     extra = 0
 
 @admin.register(IndividualEntrepreneur)
 class IndividualEntrepreneurAdmin(admin.ModelAdmin):
     list_display = ["iep_name", "ident_number", "type_of_activity", "el_key", "status", "sign", "created_date"]
-    inlines = [IepInfoTabularInline]
+    inlines = [IepInfoTabularInline, IepSalaryTabularInline]
     search_fields = ["iep_name"]
 
 
@@ -70,18 +64,3 @@ class EmployeeSalaryTabularInline(admin.TabularInline):
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ["full_name"]
     inlines = [EmployeeSalaryTabularInline]
-
-
-
-@admin.register(IndividualEntrepreneurSalary)
-class IndividualEntrepreneurSalaryAdmin(admin.ModelAdmin):
-    list_display = ["iep", "created_date", "description", "amount"]
-    autocomplete_fields = ["iep"]
-    list_filter = (('created_date', DateRangeFilter),)
-
-
-
-@admin.register(IndividualEntrepreneurDebt)
-class IndividualEntrepreneurDebtAdmin(admin.ModelAdmin):
-    list_display = ["iep", "update_date", "description", "debt"]
-    autocomplete_fields = ["iep"]

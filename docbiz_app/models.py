@@ -19,7 +19,7 @@ class Menu(models.Model):
 
 
 
-class Transactions(models.Model): 
+class Transactions(models.Model):
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата публикации')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
     incoming = models.IntegerField(blank=True, null=True, default=0, verbose_name='приход')
@@ -57,7 +57,7 @@ class EmployeeSalary(models.Model):
     employee = models.ForeignKey('Employee', on_delete=models.CASCADE, verbose_name='сотрудник')
     amount = models.IntegerField(default=0, blank=True, null=True, verbose_name='оплата')
     description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
-   
+
     class Meta:
         db_table = "employee_salary"
         verbose_name = 'ЗП сотрудника'
@@ -101,21 +101,6 @@ class Clients(models.Model):
         verbose_name = 'Клиенты'
         verbose_name_plural = 'Клиенты'
         ordering = ['created_date']
-    
-
-
-
-class ClientsPayment(models.Model):
-    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата')
-    client = models.ForeignKey('Cashboxes', on_delete=models.DO_NOTHING, verbose_name='клиент')
-    description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
-    amount = models.IntegerField(default=0, verbose_name='сумма')
-
-    class Meta:
-        db_table = "clients_payment"
-        verbose_name = 'Оплата Клиента'
-        verbose_name_plural = 'Оплата Клиента'
-
 
 
 
@@ -162,13 +147,15 @@ class IndividualEntrepreneur(models.Model):
         ('Одиночка', 'Одиночка'),
         ('Одиночка солдат', 'Одиночка солдат'),
     )
-    
+
     created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата открытия')
     update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    iep_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='ИП')
+    iep_name = models.CharField(max_length=100, blank=True, null=True, verbose_name='Ф.И.О')
     ident_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='ИНН')
     type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     tel_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='номер тел.')
+    email = models.EmailField(blank=True, null=True, verbose_name='почта')
+    date_of_birth = models.DateField(blank=True, null=True, default=datetime.now, verbose_name='дата рождения')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
     sign = models.BooleanField(default=True, verbose_name='честный знак')
@@ -228,19 +215,3 @@ class IndividualEntrepreneurSalary(models.Model):
         db_table = "iep_salary"
         verbose_name = "ИП ЗП"
         verbose_name_plural = "ИП ЗП"
-
-
-
-
-class IndividualEntrepreneurDebt(models.Model):
-    created_date = models.DateField(auto_now=False, auto_created=False, default=datetime.now, verbose_name='дата заполнения')
-    update_date = models.DateField(auto_now_add=True, verbose_name='дата обновления')
-    iep = models.ForeignKey('IndividualEntrepreneur', on_delete=models.CASCADE, verbose_name='ИП')
-    description = models.CharField(max_length=155, blank=True, null=True, verbose_name='коментарий')
-    debt = models.IntegerField(default=0, verbose_name='долг')
-
-    class Meta:
-        db_table = "iep_debt"
-        verbose_name = "ИП долги"
-        verbose_name_plural = "ИП долги"
-
