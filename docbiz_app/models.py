@@ -154,11 +154,12 @@ class IndividualEntrepreneur(models.Model):
     ident_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='ИНН')
     type_of_activity = models.CharField(max_length=50, choices=TYPE_ACTIVITY, verbose_name='вид деятельности')
     tel_number = models.CharField(max_length=12, blank=True, null=True, verbose_name='номер тел.')
-    email = models.EmailField(blank=True, null=True, verbose_name='почта')
-    date_of_birth = models.DateField(blank=True, null=True, default=datetime.now, verbose_name='дата рождения')
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
     sign = models.BooleanField(default=True, verbose_name='честный знак')
+    email = models.EmailField(blank=True, null=True, verbose_name='почта')
+    date_of_birth = models.DateField(blank=True, null=True, default=datetime.now, verbose_name='дата рождения')
+
 
 
     class Meta:
