@@ -157,8 +157,7 @@ class IndividualEntrepreneur(models.Model):
     el_key = models.BooleanField(default=True, verbose_name='электронный ключ')
     status = models.BooleanField(default=True, verbose_name='статус')
     sign = models.BooleanField(default=True, verbose_name='честный знак')
-    email = models.EmailField(blank=True, null=True, verbose_name='почта')
-    date_of_birth = models.DateField(blank=True, null=True, default=datetime.now, verbose_name='дата рождения')
+    
 
 
 
